@@ -1,0 +1,183 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{A67C4FA2-52B3-458D-9A78-D87947187039}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Content</RootNamespace>
+    <AssemblyName>Content</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Arenas\ArenaLarge3\Arena.lua" />
+    <None Include="Arenas\ArenaLaserLarge2\Arena.lua" />
+    <None Include="Arenas\ArenaLaserLarge\Arena.lua" />
+    <None Include="Arenas\ArenaMobLarge\Arena.lua" />
+    <None Include="Arenas\Common\CentralLauncher.lua" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <None Include="Arenas\Common\Laser.lua" />
+    <None Include="Arenas\LaserLarge\Arena.lua" />
+    <None Include="Audio\Music\Match.ogg" />
+    <None Include="Audio\Music\Menu.ogg" />
+    <None Include="Audio\Music\AltMenu.ogg" />
+    <None Include="Game\Colors.lua" />
+    <None Include="Game\PlayerSprites.lua" />
+    <None Include="Graphics\Particles\ChargedShot.lua" />
+    <None Include="Graphics\Particles\ChargingPlayer.lua" />
+    <None Include="Graphics\cupSprite.lua" />
+    <None Include="Graphics\Particles\fx.lua" />
+    <None Include="Graphics\Particles\Shield.lua" />
+    <None Include="Graphics\Particles\PassShot.lua" />
+    <None Include="Interface\ControlsMenu.lua" />
+    <None Include="Interface\ControlsPauseMenu.lua" />
+    <None Include="Interface\LoadingScreenMenu.lua" />
+    <None Include="Interface\MenuSounds.lua" />
+    <None Include="Interface\PlayMenu.lua" />
+    <None Include="Graphics\Menu\BigMacSelected.xnb" />
+    <None Include="Graphics\Menu\BigMacUnselected.xnb" />
+    <None Include="Graphics\Menu\BigMacUnselectedPen.xnb" />
+    <None Include="Graphics\LauncherCentralShield.lua" />
+    <None Include="Graphics\Particles\Teleport.lua" />
+    <None Include="Graphics\Shaders\ColorMasking.fx" />
+    <None Include="Interface\OptionMenu.lua" />
+    <None Include="Interface\MatchEndMenu.lua" />
+    <None Include="Interface\PauseMenu.lua" />
+    <None Include="Arenas\Common\AssistLauncher.lua" />
+    <None Include="Arenas\Common\SimpleLauncher.lua" />
+    <None Include="Arenas\JungleArena2\Center.lua" />
+    <None Include="Arenas\JungleBasic\Wall.lua" />
+    <None Include="Audio\Music.lua" />
+    <None Include="Audio\Sounds.lua" />
+    <None Include="Graphics\controlSprite.lua" />
+    <None Include="Graphics\GameplayFontLarge.xnb" />
+    <None Include="Interface\SelectMapMenu.lua" />
+    <None Include="Interface\TitleScreenMenu.lua" />
+    <None Include="Interface\SelectTeamMenu.lua" />
+    <None Include="Interface\MainMenu.lua" />
+    <None Include="heatmap.fx" />
+    <None Include="heatmapSpot.fx" />
+    <None Include="Arenas\ArenaLarge2\Arena.lua" />
+    <None Include="Arenas\ArenaLarge\Arena.lua" />
+    <None Include="Arenas\JungleArena2\Arena.lua" />
+    <None Include="Arenas\TutoArena\Arena.lua" />
+    <None Include="Arenas\JungleArena2\ArenaCollision.lua" />
+    <None Include="Arenas\JungleBasic\Arena.lua" />
+    <None Include="Graphics\bigmacca.xnb" />
+    <None Include="Graphics\GameplayFont.xnb" />
+    <None Include="Graphics\sparks.lua" />
+    <None Include="Graphics\DisplayFont.xnb" />
+    <None Include="Arenas\Arenas.lua" />
+    <None Include="Arenas\TestArena\Arena.lua" />
+    <None Include="Arenas\TestArena2\Arena.lua" />
+    <None Include="Graphics\ballSprite.lua" />
+    <None Include="System\SystemFont.xnb" />
+    <None Include="Graphics\ChargedShotFx.lua" />
+    <None Include="Game\Ball.lua" />
+    <None Include="Game\ChargedPass.lua" />
+    <None Include="Game\ChargedShot.lua" />
+    <None Include="Game\Config.lua" />
+    <None Include="Game\Edit.lua" />
+    <None Include="Game\GameStart.lua" />
+    <None Include="Game\Match.lua" />
+    <None Include="Game\Menu.lua" />
+    <None Include="Game\Navigation.lua" />
+    <None Include="Game\Player.lua" />
+    <None Include="Game\PlayerSolo.lua" />
+    <None Include="Game\Projectile.lua" />
+    <None Include="Game\Shield.lua" />
+    <None Include="Game\Tackle.lua" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Graphics\font.xnb" />
+    <None Include="Graphics\playerSprite.lua" />
+    <None Include="Physics\font.xnb" />
+    <None Include="System\Debug.lua" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Arenas\Common\Basic\Collision_small.png" />
+    <Content Include="Arenas\JungleBasic\circleWall.png" />
+    <Content Include="Arenas\TutoArena\terrain_tex.png" />
+    <Content Include="Arenas\TutoArena\terrain_tex_preview.png" />
+    <Content Include="Arenas\JungleBasic\circleWallMask.png" />
+    <Content Include="Arenas\JungleBasic\terrain.png" />
+    <Content Include="Arenas\JungleBasic\terrain_tex.png" />
+    <Content Include="Arenas\TestArena\terrain.png" />
+    <Content Include="Arenas\TestArena2\terrain.png" />
+    <Content Include="Audio\Sfx\Gameplay\BallBounce-01.wav" />
+    <Content Include="Audio\Sfx\Gameplay\BallBounce-02.wav" />
+    <Content Include="Audio\Sfx\Gameplay\BallBounce-03.wav" />
+    <Content Include="Audio\Sfx\Gameplay\BallBounce-04.wav" />
+    <Content Include="Audio\Sfx\Gameplay\BallShoot-01.wav" />
+    <Content Include="Audio\Sfx\Gameplay\BallShoot-02.wav" />
+    <Content Include="Audio\Sfx\Gameplay\BallShoot-03.wav" />
+    <Content Include="Audio\Sfx\Gameplay\Charge-01.wav" />
+    <Content Include="Audio\Sfx\Gameplay\Charge-02.wav" />
+    <Content Include="Audio\Sfx\Gameplay\Goal-01.wav" />
+    <Content Include="Audio\Sfx\Gameplay\Goal-02.wav" />
+    <Content Include="Audio\Sfx\Gameplay\Goal-03.wav" />
+    <Content Include="Audio\Sfx\Gameplay\Goal-04.wav" />
+    <Content Include="Audio\Sfx\Gameplay\Stun-01.wav" />
+    <Content Include="Audio\Sfx\Gameplay\Stun-02.wav" />
+    <Content Include="Audio\Sfx\Gameplay\Stun-03.wav" />
+    <Content Include="Audio\Sfx\Gameplay\Stun-04.wav" />
+    <Content Include="Graphics\ball48.png" />
+    <Content Include="Graphics\fx.png" />
+    <Content Include="Graphics\fxHL.png" />
+    <Content Include="Graphics\goal.png" />
+    <Content Include="Graphics\Menu\ArenaSelectionArrows.png" />
+    <Content Include="Graphics\Menu\ArenaSelectionSeparator.png" />
+    <Content Include="Graphics\Menu\Background.png" />
+    <Content Include="Graphics\Menu\MenuArt.png" />
+    <Content Include="Graphics\Menu\MenuArtGrey.png" />
+    <Content Include="Graphics\Menu\MenuCareerOff.png" />
+    <Content Include="Graphics\Menu\MenuCareerOn.png" />
+    <Content Include="Graphics\Menu\MenuQuitOff.png" />
+    <Content Include="Graphics\Menu\MenuQuitOn.png" />
+    <Content Include="Graphics\Menu\MenuSettingsOff.png" />
+    <Content Include="Graphics\Menu\MenuSettingsOn.png" />
+    <Content Include="Graphics\Menu\MenuVersusOff.png" />
+    <Content Include="Graphics\Menu\MenuVersusOn.png" />
+    <Content Include="Graphics\players.png" />
+    <Content Include="Graphics\terrain.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <ItemGroup />
+</Project>

@@ -1,0 +1,6 @@
+set SOLUTIONDIR=%1
+set BUILDDIR= %SOLUTIONDIR%..\Build\
+
+if EXIST %BUILDDIR% (
+	rd /s /q %BUILDDIR%
+)

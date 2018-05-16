@@ -1,0 +1,260 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{493AF816-E0D5-46FD-B32F-8D67FBEEE900}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Ball</RootNamespace>
+    <AssemblyName>goalrush</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>
+    </ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;WINDOWS</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;WINDOWS</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Shipping|AnyCPU'">
+    <OutputPath>bin\Shipping\</OutputPath>
+    <DefineConstants>TRACE;WINDOWS</DefineConstants>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Audio\AudioHelper.cs" />
+    <Compile Include="Audio\GameMusic.cs" />
+    <Compile Include="Career\CareerProfile.cs" />
+    <Compile Include="Career\PlayerSkill.cs" />
+    <Compile Include="Career\PlayerSkillParameters.cs" />
+    <Compile Include="Config.cs" />
+    <Compile Include="Events.cs" />
+    <Compile Include="Game.cs" />
+    <Compile Include="Gameplay\Arenas\Arena_Cup.cs" />
+    <Compile Include="Gameplay\Arenas\Arena_Score.cs" />
+    <Compile Include="Gameplay\Arenas\LDDefinition.cs" />
+    <Compile Include="Gameplay\Arenas\Objects\AssistBallLauncherComponent.cs" />
+    <Compile Include="Gameplay\Arenas\Objects\CentralBallLauncherComponent.cs" />
+    <Compile Include="Gameplay\Arenas\Objects\IBallLauncher.cs" />
+    <Compile Include="Gameplay\Arenas\Objects\Laser.cs" />
+    <Compile Include="Gameplay\Arenas\Objects\LauncherComponent.cs" />
+    <Compile Include="Gameplay\Arenas\Objects\LauncherShield.cs" />
+    <Compile Include="Gameplay\Arenas\Objects\LaunchersParameters.cs" />
+    <Compile Include="Gameplay\Arenas\Objects\SimpleBallLauncherComponent.cs" />
+    <Compile Include="Gameplay\Arenas\Scripts\ArenaLarge.cs" />
+    <Compile Include="Gameplay\Arenas\Scripts\ArenaLarge2.cs" />
+    <Compile Include="Gameplay\Arenas\Scripts\ArenaMobLarge.cs" />
+    <Compile Include="Gameplay\Arenas\Scripts\BasicArena.cs" />
+    <Compile Include="Gameplay\Arenas\Scripts\LaserLarge2.cs" />
+    <Compile Include="Gameplay\Arenas\Scripts\LaserLarge.cs" />
+    <Compile Include="Gameplay\Arenas\Scripts\JungleArena2.cs" />
+    <Compile Include="Gameplay\Arenas\Scripts\JungleBasic.cs" />
+    <Compile Include="Gameplay\Arenas\Scripts\TestArena.cs" />
+    <Compile Include="Gameplay\Arenas\Scripts\TestArena2.cs" />
+    <Compile Include="Gameplay\Ball\BallFadeEffect.cs" />
+    <Compile Include="Gameplay\Ball\IgnorePlayerEffect.cs" />
+    <Compile Include="Gameplay\Ball\SlowEffect.cs" />
+    <Compile Include="Gameplay\ColorScheme.cs" />
+    <Compile Include="Gameplay\Fx\ScreenFocus.cs" />
+    <Compile Include="Gameplay\Fx\PlayerChargedPassFx.cs" />
+    <Compile Include="Gameplay\Fx\SpriteFx.cs" />
+    <Compile Include="Gameplay\Fx\TextFx.cs" />
+    <Compile Include="Gameplay\Fx\PlayerControllerTextFx.cs" />
+    <Compile Include="Gameplay\GameCamera.cs" />
+    <Compile Include="Gameplay\Fx\ScreenShake.cs" />
+    <Compile Include="Gameplay\MatchStartInfo.cs" />
+    <Compile Include="Gameplay\Arenas\Arena.cs" />
+    <Compile Include="Gameplay\Arenas\ArenaDescription.cs" />
+    <Compile Include="Gameplay\Arenas\ArenaScript.cs" />
+    <Compile Include="Gameplay\Ball\Ball.cs" />
+    <Compile Include="Gameplay\Ball\TargetEffect.cs" />
+    <Compile Include="Gameplay\Fx\BallChargedShotFx.cs" />
+    <Compile Include="Gameplay\Ball\BallEffect.cs" />
+    <Compile Include="Gameplay\Ball\BashEffect.cs" />
+    <Compile Include="Gameplay\Ball\PassAssistEffect.cs" />
+    <Compile Include="Gameplay\Ball\PushEffect.cs" />
+    <Compile Include="Gameplay\GameManager.cs" />
+    <Compile Include="Gameplay\GameplayEffect.cs" />
+    <Compile Include="Gameplay\Goal.cs" />
+    <Compile Include="Gameplay\Match.cs" />
+    <Compile Include="Gameplay\Fx\PlayerChargedShotFx.cs" />
+    <Compile Include="Gameplay\Fx\PlayerTackleFx.cs" />
+    <Compile Include="Gameplay\MatchFeedback.cs" />
+    <Compile Include="Gameplay\MatchTimer.cs" />
+    <Compile Include="Gameplay\Navigation\NavigationGridData.cs" />
+    <Compile Include="Gameplay\Navigation\NavigationManager.cs" />
+    <Compile Include="Gameplay\Navigation\PotentialMaps\PotentialMap.cs" />
+    <Compile Include="Gameplay\Navigation\PotentialMaps\PotentialMapInfluence.cs" />
+    <Compile Include="Gameplay\Players\AI\AssistPlayerPotentialSource.cs" />
+    <Compile Include="Gameplay\Players\AI\PlayerAIController.cs" />
+    <Compile Include="Gameplay\Players\AI\CanShootPotentialSource.cs" />
+    <Compile Include="Gameplay\Players\AI\Script.cs" />
+    <Compile Include="Gameplay\Players\PlayerAntenna.cs" />
+    <Compile Include="Gameplay\Players\PlayerBlink.cs" />
+    <Compile Include="Gameplay\Players\PlayerGoldEffect.cs" />
+    <Compile Include="Gameplay\Players\PlayerHumanController.cs" />
+    <Compile Include="Gameplay\Players\PlayerInvincibleEffect.cs" />
+    <Compile Include="Gameplay\Players\PlayerOffScreenMarker.cs" />
+    <Compile Include="Gameplay\Players\PlayerShieldUpEffect.cs" />
+    <Compile Include="Gameplay\Players\PlayerTackleEffect.cs" />
+    <Compile Include="Gameplay\Players\PlayerBashEffect.cs" />
+    <Compile Include="Gameplay\Players\PlayerDisableMagnetEffect.cs" />
+    <Compile Include="Gameplay\Players\PlayerProperties.cs" />
+    <Compile Include="Gameplay\Players\PlayerStunEffect.cs" />
+    <Compile Include="Gameplay\Players\PlayerController.cs" />
+    <Compile Include="Gameplay\Players\PlayerEffect.cs" />
+    <Compile Include="Gameplay\Players\PlayerParameters.cs" />
+    <Compile Include="Gameplay\Projectile.cs" />
+    <Compile Include="Gameplay\Players\Player.cs" />
+    <Compile Include="Gameplay\Players\PlayerInput.cs" />
+    <Compile Include="Gameplay\PropertyStack.cs" />
+    <Compile Include="Gameplay\Team.cs" />
+    <Compile Include="Gameplay\Tutorial\Tutorial.cs" />
+    <Compile Include="GameProfile.cs" />
+    <Compile Include="GameSession.cs" />
+    <Compile Include="Graphics\CameraDefinition.cs" />
+    <Compile Include="Graphics\ColorMaskedSprite.cs" />
+    <Compile Include="Graphics\ColorMaskingEffect.cs" />
+    <Compile Include="Graphics\ScreenFX.cs" />
+    <Compile Include="Menus\Scripts\ControlsListPauseScript.cs" />
+    <Compile Include="Menus\Scripts\ControlsListScript.cs" />
+    <Compile Include="Menus\Scripts\LoadingScreenMenuScript.cs" />
+    <Compile Include="Map\Location.cs" />
+    <Compile Include="Map\Reward.cs" />
+    <Compile Include="Menus\MenuScaleFx.cs" />
+    <Compile Include="Menus\Scripts\AltMainMenuScript.cs" />
+    <Compile Include="Menus\Scripts\AltSelectMapScript.cs" />
+    <Compile Include="Menus\Scripts\PlayMenuScript.cs" />
+    <Compile Include="Menus\Scripts\OptionMenuScript.cs" />
+    <Compile Include="Menus\Scripts\MatchEndScript.cs" />
+    <Compile Include="Menus\Scripts\MatchMenuScript.cs" />
+    <Compile Include="Menus\Scripts\PauseMenuScript.cs" />
+    <Compile Include="Menus\Scripts\SelectMapScript.cs" />
+    <Compile Include="Menus\Scripts\TitleScreenScript.cs" />
+    <Compile Include="Menus\Scripts\MainMenuScript.cs" />
+    <Compile Include="Menus\Scripts\SelectTeamMenuScript.cs" />
+    <Compile Include="Menus\Menu.cs" />
+    <Compile Include="Menus\MenuController.cs" />
+    <Compile Include="Menus\MenuItem.cs" />
+    <Compile Include="Menus\MenuManager.cs" />
+    <Compile Include="Menus\MenuScript.cs" />
+    <Compile Include="OptionManager.cs" />
+    <Compile Include="Physics\CollisionGroup.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Stats\Event.cs" />
+    <Compile Include="Stats\HeatMapFx.cs" />
+    <Compile Include="Stats\StatManager.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="GamepadBridge">
+      <HintPath>..\..\01 - MonoGame\ThirdParty\GamepadConfig\GamepadBridge.dll</HintPath>
+    </Reference>
+    <Reference Include="GamepadConfigControls">
+      <HintPath>..\..\01 - MonoGame\ThirdParty\GamepadConfig\GamepadConfigControls.dll</HintPath>
+    </Reference>
+    <Reference Include="NVorbis, Version=0.8.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\01 - MonoGame\ThirdParty\Dependencies\NVorbis\NVorbis.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Icon.ico" />
+    <Content Include="SDL.dll">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+    <None Include="Ball.exe.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\01 - MonoGame\MonoGame.Framework\MonoGame.Framework.WindowsGL.csproj">
+      <Project>{6d75e618-19ca-4c51-9546-f10965fbc0b8}</Project>
+      <Name>MonoGame.Framework.WindowsGL</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\02 - Engine\LittleBigEngine\LittleBigEngine.Windows.csproj">
+      <Project>{12087cbb-0061-48bc-878f-83ed21c51173}</Project>
+      <Name>LittleBigEngine.Windows</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\06 - External\Farseer Physics\Farseer Physics.Windows.csproj">
+      <Project>{d1d9d79f-bac9-4067-823f-0059e72ad423}</Project>
+      <Name>Farseer Physics.Windows</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Gameplay\AI\" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.5">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.5 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>call "$(SolutionDir)..\Tools\cleanwindowsbuild.bat" "$(SolutionDir)"</PreBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <PostBuildEvent>call "$(SolutionDir)..\Tools\makewindowsbuild.bat" "$(SolutionDir)" "$(TargetDir)"</PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

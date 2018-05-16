@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ExternalProject Name="FrameworkReferences.Net">
+
+  <Platform Type="iOS">
+    <Reference Include="System" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Core" />
+    <Reference Include="Lidgren.Network" />
+  </Platform>
+
+  <Platform Type="tvOS">
+    <Reference Include="System.Core" />
+    <Reference Include="Lidgren.Network" />
+  </Platform>
+
+  <Platform Type="Linux">
+    <Reference Include="System" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="Lidgren.Network" />
+  </Platform>
+
+  <Platform Type="MacOS">
+    <Reference Include="System" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="Lidgren.Network" />
+    <Reference Include="OpenTK" />
+  </Platform>
+
+  <Platform Type="Android">
+    <Reference Include="System" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Core" />
+    <Reference Include="mscorlib" />
+    <Reference Include="Lidgren.Network" />
+  </Platform>
+
+  <Platform Type="Windows">
+    <Reference Include="System" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Core" />
+    <Reference Include="Lidgren.Network" />
+  </Platform>
+
+  <Platform Type="Windows8">
+    <Reference Include="System" />
+    <Reference Include="System.Runtime.Serialization" />
+  </Platform>
+
+  <Platform Type="WindowsGL">
+    <Reference Include="System" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Core" />
+    <Reference Include="Lidgren.Network" />
+  </Platform>
+
+  <Platform Type="WindowsPhone81">
+    <Reference Include="System" />
+    <Reference Include="System.Runtime.Serialization" />
+  </Platform>
+  
+  <Platform Type="WindowsUniversal">
+  </Platform>
+   
+  <Platform Type="Web">
+    <Reference Include="System" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="JSIL.Meta" />
+  </Platform>
+
+</ExternalProject>

@@ -1,0 +1,127 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01 Mono", "01 Mono", "{D49EBF7C-514E-4D66-817E-A5D65FBCEDFA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lidgren.Network.Linux", "01 - MonoGame\ThirdParty\Lidgren.Network\Lidgren.Network.Linux.csproj", "{758CB33D-6EBD-41EA-BB0C-55B1C97A325F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonoGame.Framework.Linux", "01 - MonoGame\MonoGame.Framework\MonoGame.Framework.Linux.csproj", "{35253CE1-C864-4CD3-8249-4D1319748E8F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02 Engine", "02 Engine", "{184690E9-B9D2-4041-B975-B09CCBD253BF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LittleBigEngine.Linux", "02 - Engine\LittleBigEngine\LittleBigEngine.Linux.csproj", "{D6B86FB5-3106-4DD0-871A-ED716DCD3558}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "04 Games", "04 Games", "{D3BD2F7A-4289-4395-9FDB-F63C1140605E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Prototypes", "Prototypes", "{F4641936-775D-400E-9CB5-7E056733508E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ball.Linux", "04 - Games\Ball\Ball.Linux.csproj", "{493AF816-E0D5-46FD-B32F-8D67FBEEE900}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "03 Tools", "03 Tools", "{163998D0-02DF-45BA-A211-7F6B4ECBFAC5}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "05 Content", "05 Content", "{BC66DC84-C4BF-47DD-A76E-1A2F0E4B6F49}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Content", "05 - Content\Content.csproj", "{A67C4FA2-52B3-458D-9A78-D87947187039}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "06 External", "06 External", "{6BDA61D7-E95F-4D15-8641-C07D42D8568A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KopiLuaDll", "06 - External\KopiLuaDll\KopiLuaDll.csproj", "{A9659B55-727E-454F-B32D-E6C337031939}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KopiLuaInterface", "06 - External\KopiLuaInterface\KopiLuaInterface.csproj", "{976CA064-F07C-44C4-AC50-CF834EAD0BCA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Farseer Physics.Linux", "06 - External\Farseer Physics\Farseer Physics.Linux.csproj", "{D1D9D79F-BAC9-4067-823F-0059E72AD423}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KopiLua.Net40", "06 - External\KopiLua\KopiLua.Net40.csproj", "{E8DDBC21-EF74-4ABA-9C49-BFC702BE25D8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Release|Any CPU = Release|Any CPU
+		Debug|Any CPU = Debug|Any CPU
+		Shipping|Any CPU = Shipping|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{35253CE1-C864-4CD3-8249-4D1319748E8F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{35253CE1-C864-4CD3-8249-4D1319748E8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{35253CE1-C864-4CD3-8249-4D1319748E8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{35253CE1-C864-4CD3-8249-4D1319748E8F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{35253CE1-C864-4CD3-8249-4D1319748E8F}.Shipping|Any CPU.ActiveCfg = Release|Any CPU
+		{35253CE1-C864-4CD3-8249-4D1319748E8F}.Shipping|Any CPU.Build.0 = Release|Any CPU
+		{493AF816-E0D5-46FD-B32F-8D67FBEEE900}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{493AF816-E0D5-46FD-B32F-8D67FBEEE900}.Debug|Any CPU.Build.0 = Debug|x86
+		{493AF816-E0D5-46FD-B32F-8D67FBEEE900}.Release|Any CPU.ActiveCfg = Release|x86
+		{493AF816-E0D5-46FD-B32F-8D67FBEEE900}.Release|Any CPU.Build.0 = Release|x86
+		{493AF816-E0D5-46FD-B32F-8D67FBEEE900}.Shipping|Any CPU.ActiveCfg = Shipping|x86
+		{493AF816-E0D5-46FD-B32F-8D67FBEEE900}.Shipping|Any CPU.Build.0 = Shipping|x86
+		{758CB33D-6EBD-41EA-BB0C-55B1C97A325F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{758CB33D-6EBD-41EA-BB0C-55B1C97A325F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{758CB33D-6EBD-41EA-BB0C-55B1C97A325F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{758CB33D-6EBD-41EA-BB0C-55B1C97A325F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{758CB33D-6EBD-41EA-BB0C-55B1C97A325F}.Shipping|Any CPU.ActiveCfg = Release|Any CPU
+		{758CB33D-6EBD-41EA-BB0C-55B1C97A325F}.Shipping|Any CPU.Build.0 = Release|Any CPU
+		{976CA064-F07C-44C4-AC50-CF834EAD0BCA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{976CA064-F07C-44C4-AC50-CF834EAD0BCA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{976CA064-F07C-44C4-AC50-CF834EAD0BCA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{976CA064-F07C-44C4-AC50-CF834EAD0BCA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{976CA064-F07C-44C4-AC50-CF834EAD0BCA}.Shipping|Any CPU.ActiveCfg = Release|Any CPU
+		{976CA064-F07C-44C4-AC50-CF834EAD0BCA}.Shipping|Any CPU.Build.0 = Release|Any CPU
+		{A67C4FA2-52B3-458D-9A78-D87947187039}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A67C4FA2-52B3-458D-9A78-D87947187039}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A67C4FA2-52B3-458D-9A78-D87947187039}.Shipping|Any CPU.ActiveCfg = Release|Any CPU
+		{A9659B55-727E-454F-B32D-E6C337031939}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A9659B55-727E-454F-B32D-E6C337031939}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A9659B55-727E-454F-B32D-E6C337031939}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A9659B55-727E-454F-B32D-E6C337031939}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A9659B55-727E-454F-B32D-E6C337031939}.Shipping|Any CPU.ActiveCfg = Release|Any CPU
+		{A9659B55-727E-454F-B32D-E6C337031939}.Shipping|Any CPU.Build.0 = Release|Any CPU
+		{D1D9D79F-BAC9-4067-823F-0059E72AD423}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D1D9D79F-BAC9-4067-823F-0059E72AD423}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D1D9D79F-BAC9-4067-823F-0059E72AD423}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D1D9D79F-BAC9-4067-823F-0059E72AD423}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D1D9D79F-BAC9-4067-823F-0059E72AD423}.Shipping|Any CPU.ActiveCfg = Release|Any CPU
+		{D1D9D79F-BAC9-4067-823F-0059E72AD423}.Shipping|Any CPU.Build.0 = Release|Any CPU
+		{D6B86FB5-3106-4DD0-871A-ED716DCD3558}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D6B86FB5-3106-4DD0-871A-ED716DCD3558}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D6B86FB5-3106-4DD0-871A-ED716DCD3558}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D6B86FB5-3106-4DD0-871A-ED716DCD3558}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D6B86FB5-3106-4DD0-871A-ED716DCD3558}.Shipping|Any CPU.ActiveCfg = Release|Any CPU
+		{D6B86FB5-3106-4DD0-871A-ED716DCD3558}.Shipping|Any CPU.Build.0 = Release|Any CPU
+		{E8DDBC21-EF74-4ABA-9C49-BFC702BE25D8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E8DDBC21-EF74-4ABA-9C49-BFC702BE25D8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E8DDBC21-EF74-4ABA-9C49-BFC702BE25D8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E8DDBC21-EF74-4ABA-9C49-BFC702BE25D8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E8DDBC21-EF74-4ABA-9C49-BFC702BE25D8}.Shipping|Any CPU.ActiveCfg = Release|Any CPU
+		{E8DDBC21-EF74-4ABA-9C49-BFC702BE25D8}.Shipping|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{758CB33D-6EBD-41EA-BB0C-55B1C97A325F} = {D49EBF7C-514E-4D66-817E-A5D65FBCEDFA}
+		{35253CE1-C864-4CD3-8249-4D1319748E8F} = {D49EBF7C-514E-4D66-817E-A5D65FBCEDFA}
+		{D6B86FB5-3106-4DD0-871A-ED716DCD3558} = {184690E9-B9D2-4041-B975-B09CCBD253BF}
+		{F4641936-775D-400E-9CB5-7E056733508E} = {D3BD2F7A-4289-4395-9FDB-F63C1140605E}
+		{493AF816-E0D5-46FD-B32F-8D67FBEEE900} = {F4641936-775D-400E-9CB5-7E056733508E}
+		{A67C4FA2-52B3-458D-9A78-D87947187039} = {BC66DC84-C4BF-47DD-A76E-1A2F0E4B6F49}
+		{A9659B55-727E-454F-B32D-E6C337031939} = {6BDA61D7-E95F-4D15-8641-C07D42D8568A}
+		{976CA064-F07C-44C4-AC50-CF834EAD0BCA} = {6BDA61D7-E95F-4D15-8641-C07D42D8568A}
+		{D1D9D79F-BAC9-4067-823F-0059E72AD423} = {6BDA61D7-E95F-4D15-8641-C07D42D8568A}
+		{E8DDBC21-EF74-4ABA-9C49-BFC702BE25D8} = {6BDA61D7-E95F-4D15-8641-C07D42D8568A}
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		Policies = $0
+		$0.DotNetNamingPolicy = $1
+		$1.DirectoryNamespaceAssociation = None
+		$1.ResourceNamePolicy = FileFormatDefault
+		$0.StandardHeader = $2
+		$2.Text = 
+		$2.IncludeInNewFiles = True
+		$0.VersionControlPolicy = $3
+		$3.inheritsSet = Mono
+		$0.ChangeLogPolicy = $4
+		$4.UpdateMode = None
+		$4.MessageStyle = $5
+		$5.LineAlign = 0
+		$4.inheritsSet = Mono
+		StartupItem = 04 - Games\Ball\Ball.Linux.csproj
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

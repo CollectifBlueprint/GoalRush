@@ -1,0 +1,6 @@
+SOLUTIONDIR=$1
+BUILDDIR="${SOLUTIONDIR}/../Build/"
+
+rm -rf "${BUILDDIR}"/*
+
+
