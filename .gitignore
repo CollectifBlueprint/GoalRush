@@ -1,0 +1,281 @@
+syntax: glob
+_ReSharper.LBE Series 06
+*.user*
+Combat/bin
+Combat/obj
+Combat/log.txt
+*.suo
+LBE/bin
+LBE/obj
+Map/bin/Debug
+Map/obj
+SpriteTool/bin
+SpriteTool/obj
+LittleBigTools/obj
+TestTool
+LittleBigTools/bin
+Project/01 - MonoGame/MonoGame.Framework/bin
+Project/02 - Engine/LittleBigEngine/bin
+Project/02 - Engine/LittleBigEngine/obj
+Project/01 - MonoGame/MonoGame.Framework/obj
+Project/log.txt
+Project/05 - Content/bin
+Project/05 - Content/obj
+Project/04 - Games/Map/bin
+Project/04 - Games/Ball/obj/
+Project/04 - Games/Ball/bin
+Project/04 - Games/Ball/obj/x86
+Project/01 - MonoGame/Graphics/Logos/MonogameBig.psd
+Project/06 - External/Farseer Physics Engine 3.3.1 XNA/bin
+Project/06 - External/Farseer Physics Engine 3.3.1 XNA/obj
+Project/06 - External/Farseer Physics/bin
+Project/06 - External/Farseer Physics/obj
+Toolbar/
+Unity/
+*.psd
+*.orig
+Stuff
+Project/07 - Output/Stats
+Project/06 - External/FontProject/FontProject/FontProject/bin
+Project/06 - External/FontProject/FontProject/FontProject/obj/x86
+Project/06 - External/FontProject/FontProject/FontProjectContent/obj
+Project/06 - External/FontProject/FontProject/FontProject/FontProject.csproj.Debug.cachefile
+*.vsp
+Project/03 -Tools/2MGFX/obj
+Project/03 -Tools/2MGFX/bin/Release/2MGFX.pdb
+Project/03 -Tools/2MGFX/bin/Debug
+*.cachefile
+Project/07 - Output
+Project/06 - External/KopiLua/bin
+Project/06 - External/KopiLua/obj
+Project/06 - External/KopiLuaDll/bin
+Project/06 - External/KopiLuaDll/obj
+Project/06 - External/KopiLuaInterface/obj
+Project/06 - External/KopiLuaInterface/bin
+Project/04 - Games/Ball/Gameplay/Fx/BallTrailFx.cs
+Project/04 - Games/Ball/log.txt
+Project/01 - MonoGame/ThirdParty/Lidgren.Network/obj
+*.col
+Project/test.txt
+Project/06 - External/OpenTk/Source/OpenTK/obj
+Project/06 - External/OpenTk/Binaries
+Project/06 - External/OpenTk/Source/OpenTK/OpenTK.xml
+Project/06 - External/Bin
+*.mdb
+*\obj\*
+*\bin\*
+Project/01 - MonoGame\ThirdParty\Dependencies
+Project/01 - MonoGame/ThirdParty/Dependencies/
+Project/01 - MonoGame/ThirdParty/Lidgren.Network/bin/
+Project\Performance1.psess
+Project/01 - MonoGame/MonoGame.Framework.Android.sln
+Project/01 - MonoGame/MonoGame.Framework.Angle.sln
+Project/01 - MonoGame/MonoGame.Framework.Content.Pipeline/MonoGame.Framework.Content.Pipeline.Linux.csproj
+Project/01 - MonoGame/MonoGame.Framework.Content.Pipeline/MonoGame.Framework.Content.Pipeline.Windows.csproj
+Project/01 - MonoGame/MonoGame.Framework.Linux.sln
+Project/01 - MonoGame/MonoGame.Framework.Ouya.sln
+Project/01 - MonoGame/MonoGame.Framework.Windows.sln
+Project/01 - MonoGame/MonoGame.Framework.Windows8.sln
+Project/01 - MonoGame/MonoGame.Framework.WindowsGL.sln
+Project/01 - MonoGame/MonoGame.Framework.WindowsPhone.sln
+Project/01 - MonoGame/MonoGame.Framework.WindowsPhone81.sln
+Project/01 - MonoGame/MonoGame.Framework.WindowsUniversal.sln
+Project/01 - MonoGame/MonoGame.Framework.iOS.sln
+Project/01 - MonoGame/MonoGame.Framework.tvOS.sln
+Project/01 - MonoGame/MonoGame.Framework/MonoGame.Framework.Android.csproj
+Project/01 - MonoGame/MonoGame.Framework/MonoGame.Framework.Angle.csproj
+Project/01 - MonoGame/MonoGame.Framework/MonoGame.Framework.Linux.csproj
+Project/01 - MonoGame/MonoGame.Framework/MonoGame.Framework.Net.Android.csproj
+Project/01 - MonoGame/MonoGame.Framework/MonoGame.Framework.Net.Linux.csproj
+Project/01 - MonoGame/MonoGame.Framework/MonoGame.Framework.Net.Ouya.csproj
+Project/01 - MonoGame/MonoGame.Framework/MonoGame.Framework.Net.Windows.csproj
+Project/01 - MonoGame/MonoGame.Framework/MonoGame.Framework.Net.Windows8.csproj
+Project/01 - MonoGame/MonoGame.Framework/MonoGame.Framework.Net.WindowsGL.csproj
+Project/01 - MonoGame/MonoGame.Framework/MonoGame.Framework.Net.WindowsPhone.csproj
+Project/01 - MonoGame/MonoGame.Framework/MonoGame.Framework.Net.WindowsPhone81.csproj
+Project/01 - MonoGame/MonoGame.Framework/MonoGame.Framework.Net.WindowsUniversal.csproj
+Project/01 - MonoGame/MonoGame.Framework/MonoGame.Framework.Net.iOS.csproj
+Project/01 - MonoGame/MonoGame.Framework/MonoGame.Framework.Ouya.csproj
+Project/01 - MonoGame/MonoGame.Framework/MonoGame.Framework.Windows.csproj
+Project/01 - MonoGame/MonoGame.Framework/MonoGame.Framework.Windows8.csproj
+Project/01 - MonoGame/MonoGame.Framework/MonoGame.Framework.WindowsGL.csproj
+Project/01 - MonoGame/MonoGame.Framework/MonoGame.Framework.WindowsPhone.csproj
+Project/01 - MonoGame/MonoGame.Framework/MonoGame.Framework.WindowsPhone81.csproj
+Project/01 - MonoGame/MonoGame.Framework/MonoGame.Framework.WindowsUniversal.csproj
+Project/01 - MonoGame/MonoGame.Framework/MonoGame.Framework.iOS.csproj
+Project/01 - MonoGame/MonoGame.Framework/MonoGame.Framework.tvOS.csproj
+Project/01 - MonoGame/Test/MonoGame.Tests.Linux.csproj
+Project/01 - MonoGame/Test/MonoGame.Tests.Windows.csproj
+Project/01 - MonoGame/Test/MonoGame.Tests.WindowsGL.csproj
+Project/01 - MonoGame/ThirdParty/Kickstart/.git/HEAD
+Project/01 - MonoGame/ThirdParty/Kickstart/.git/config
+Project/01 - MonoGame/ThirdParty/Kickstart/.git/description
+Project/01 - MonoGame/ThirdParty/Kickstart/.git/hooks/applypatch-msg.sample
+Project/01 - MonoGame/ThirdParty/Kickstart/.git/hooks/commit-msg.sample
+Project/01 - MonoGame/ThirdParty/Kickstart/.git/hooks/post-update.sample
+Project/01 - MonoGame/ThirdParty/Kickstart/.git/hooks/pre-applypatch.sample
+Project/01 - MonoGame/ThirdParty/Kickstart/.git/hooks/pre-commit.sample
+Project/01 - MonoGame/ThirdParty/Kickstart/.git/hooks/pre-push.sample
+Project/01 - MonoGame/ThirdParty/Kickstart/.git/hooks/pre-rebase.sample
+Project/01 - MonoGame/ThirdParty/Kickstart/.git/hooks/pre-receive.sample
+Project/01 - MonoGame/ThirdParty/Kickstart/.git/hooks/prepare-commit-msg.sample
+Project/01 - MonoGame/ThirdParty/Kickstart/.git/hooks/update.sample
+Project/01 - MonoGame/ThirdParty/Kickstart/.git/index
+Project/01 - MonoGame/ThirdParty/Kickstart/.git/info/exclude
+Project/01 - MonoGame/ThirdParty/Kickstart/.git/logs/HEAD
+Project/01 - MonoGame/ThirdParty/Kickstart/.git/logs/refs/heads/master
+Project/01 - MonoGame/ThirdParty/Kickstart/.git/logs/refs/remotes/origin/HEAD
+Project/01 - MonoGame/ThirdParty/Kickstart/.git/objects/pack/pack-f451376d6b2d17149ed363e1a533687b27bd0106.idx
+Project/01 - MonoGame/ThirdParty/Kickstart/.git/objects/pack/pack-f451376d6b2d17149ed363e1a533687b27bd0106.pack
+Project/01 - MonoGame/ThirdParty/Kickstart/.git/packed-refs
+Project/01 - MonoGame/ThirdParty/Kickstart/.git/refs/heads/master
+Project/01 - MonoGame/ThirdParty/Kickstart/.git/refs/remotes/origin/HEAD
+Project/01 - MonoGame/ThirdParty/Kickstart/.gitignore
+Project/01 - MonoGame/ThirdParty/Kickstart/CMakeLists.txt
+Project/01 - MonoGame/ThirdParty/Kickstart/LICENSE
+Project/01 - MonoGame/ThirdParty/Kickstart/README
+Project/01 - MonoGame/ThirdParty/Kickstart/binreloc.LICENSE
+Project/01 - MonoGame/ThirdParty/Kickstart/binreloc.c
+Project/01 - MonoGame/ThirdParty/Kickstart/binreloc.h
+Project/01 - MonoGame/ThirdParty/Kickstart/compile-mono.sh
+Project/01 - MonoGame/ThirdParty/Kickstart/kick.c
+Project/01 - MonoGame/ThirdParty/Kickstart/precompiled/Mono.Posix.dll
+Project/01 - MonoGame/ThirdParty/Kickstart/precompiled/Mono.Security.dll
+Project/01 - MonoGame/ThirdParty/Kickstart/precompiled/System.Configuration.dll
+Project/01 - MonoGame/ThirdParty/Kickstart/precompiled/System.Core.dll
+Project/01 - MonoGame/ThirdParty/Kickstart/precompiled/System.Data.dll
+Project/01 - MonoGame/ThirdParty/Kickstart/precompiled/System.Drawing.dll
+Project/01 - MonoGame/ThirdParty/Kickstart/precompiled/System.Runtime.Serialization.dll
+Project/01 - MonoGame/ThirdParty/Kickstart/precompiled/System.Security.dll
+Project/01 - MonoGame/ThirdParty/Kickstart/precompiled/System.Xml.Linq.dll
+Project/01 - MonoGame/ThirdParty/Kickstart/precompiled/System.Xml.dll
+Project/01 - MonoGame/ThirdParty/Kickstart/precompiled/System.dll
+Project/01 - MonoGame/ThirdParty/Kickstart/precompiled/include/mono-2.0/mono/metadata/assembly.h
+Project/01 - MonoGame/ThirdParty/Kickstart/precompiled/include/mono-2.0/mono/metadata/image.h
+Project/01 - MonoGame/ThirdParty/Kickstart/precompiled/include/mono-2.0/mono/metadata/mono-config.h
+Project/01 - MonoGame/ThirdParty/Kickstart/precompiled/include/mono-2.0/mono/utils/mono-publib.h
+Project/01 - MonoGame/ThirdParty/Kickstart/precompiled/kick
+Project/01 - MonoGame/ThirdParty/Kickstart/precompiled/kick-sgen.bin.osx
+Project/01 - MonoGame/ThirdParty/Kickstart/precompiled/kick-sgen.bin.x86
+Project/01 - MonoGame/ThirdParty/Kickstart/precompiled/kick-sgen.bin.x86_64
+Project/01 - MonoGame/ThirdParty/Kickstart/precompiled/kick.bin.osx
+Project/01 - MonoGame/ThirdParty/Kickstart/precompiled/kick.bin.x86
+Project/01 - MonoGame/ThirdParty/Kickstart/precompiled/kick.bin.x86_64
+Project/01 - MonoGame/ThirdParty/Kickstart/precompiled/lib/libmono-2.0.so
+Project/01 - MonoGame/ThirdParty/Kickstart/precompiled/lib/libmono-2.0.so.1
+Project/01 - MonoGame/ThirdParty/Kickstart/precompiled/lib/libmonosgen-2.0.so
+Project/01 - MonoGame/ThirdParty/Kickstart/precompiled/lib/libmonosgen-2.0.so.0
+Project/01 - MonoGame/ThirdParty/Kickstart/precompiled/lib64/libmono-2.0.so
+Project/01 - MonoGame/ThirdParty/Kickstart/precompiled/lib64/libmono-2.0.so.1
+Project/01 - MonoGame/ThirdParty/Kickstart/precompiled/lib64/libmonosgen-2.0.so
+Project/01 - MonoGame/ThirdParty/Kickstart/precompiled/lib64/libmonosgen-2.0.so.0
+Project/01 - MonoGame/ThirdParty/Kickstart/precompiled/mono/4.0/machine.config
+Project/01 - MonoGame/ThirdParty/Kickstart/precompiled/mono/config
+Project/01 - MonoGame/ThirdParty/Kickstart/precompiled/mscorlib.dll
+Project/01 - MonoGame/ThirdParty/Kickstart/precompiled/osx/libmono-2.0.1.dylib
+Project/01 - MonoGame/ThirdParty/Kickstart/precompiled/osx/libmono-2.0.dylib
+Project/01 - MonoGame/ThirdParty/Kickstart/precompiled/osx/libmonosgen-2.0.0.dylib
+Project/01 - MonoGame/ThirdParty/Kickstart/precompiled/osx/libmonosgen-2.0.dylib
+Project/01 - MonoGame/ThirdParty/Kickstart/symlower.h
+Project/01 - MonoGame/ThirdParty/Lidgren.Network/Lidgren.Network.Android.csproj
+Project/01 - MonoGame/ThirdParty/Lidgren.Network/Lidgren.Network.Linux.csproj
+Project/01 - MonoGame/ThirdParty/Lidgren.Network/Lidgren.Network.Ouya.csproj
+Project/01 - MonoGame/ThirdParty/Lidgren.Network/Lidgren.Network.Windows.csproj
+Project/01 - MonoGame/ThirdParty/Lidgren.Network/Lidgren.Network.WindowsGL.csproj
+Project/01 - MonoGame/ThirdParty/Lidgren.Network/Lidgren.Network.iOS.csproj
+Project/01 - MonoGame/Tools/2MGFX/2MGFX.Windows.csproj
+Project/01 - MonoGame/Tools/MGCB/MGCB.Linux.csproj
+Project/01 - MonoGame/Tools/MGCB/MGCB.Windows.csproj
+Project/01 - MonoGame/Tools/Pipeline/Pipeline.Linux.csproj
+Project/01 - MonoGame/Tools/Pipeline/Pipeline.Windows.csproj
+Project/01 - MonoGame/ThirdParty/NVorbis/.git/HEAD
+Project/01 - MonoGame/ThirdParty/NVorbis/.git/config
+Project/01 - MonoGame/ThirdParty/NVorbis/.git/description
+Project/01 - MonoGame/ThirdParty/NVorbis/.git/hooks/applypatch-msg.sample
+Project/01 - MonoGame/ThirdParty/NVorbis/.git/hooks/commit-msg.sample
+Project/01 - MonoGame/ThirdParty/NVorbis/.git/hooks/post-update.sample
+Project/01 - MonoGame/ThirdParty/NVorbis/.git/hooks/pre-applypatch.sample
+Project/01 - MonoGame/ThirdParty/NVorbis/.git/hooks/pre-commit.sample
+Project/01 - MonoGame/ThirdParty/NVorbis/.git/hooks/pre-push.sample
+Project/01 - MonoGame/ThirdParty/NVorbis/.git/hooks/pre-rebase.sample
+Project/01 - MonoGame/ThirdParty/NVorbis/.git/hooks/pre-receive.sample
+Project/01 - MonoGame/ThirdParty/NVorbis/.git/hooks/prepare-commit-msg.sample
+Project/01 - MonoGame/ThirdParty/NVorbis/.git/hooks/update.sample
+Project/01 - MonoGame/ThirdParty/NVorbis/.git/index
+Project/01 - MonoGame/ThirdParty/NVorbis/.git/info/exclude
+Project/01 - MonoGame/ThirdParty/NVorbis/.git/logs/HEAD
+Project/01 - MonoGame/ThirdParty/NVorbis/.git/logs/refs/heads/master
+Project/01 - MonoGame/ThirdParty/NVorbis/.git/logs/refs/remotes/origin/HEAD
+Project/01 - MonoGame/ThirdParty/NVorbis/.git/objects/pack/pack-964879e17d2da2eef344d3341631339a09654d50.idx
+Project/01 - MonoGame/ThirdParty/NVorbis/.git/objects/pack/pack-964879e17d2da2eef344d3341631339a09654d50.pack
+Project/01 - MonoGame/ThirdParty/NVorbis/.git/packed-refs
+Project/01 - MonoGame/ThirdParty/NVorbis/.git/refs/heads/master
+Project/01 - MonoGame/ThirdParty/NVorbis/.git/refs/remotes/origin/HEAD
+Project/01 - MonoGame/ThirdParty/NVorbis/.gitignore
+Project/01 - MonoGame/ThirdParty/NVorbis/.nuget/NuGet.Config
+Project/01 - MonoGame/ThirdParty/NVorbis/.nuget/NuGet.exe
+Project/01 - MonoGame/ThirdParty/NVorbis/.nuget/NuGet.targets
+Project/01 - MonoGame/ThirdParty/NVorbis/.nuget/packages.config
+Project/01 - MonoGame/ThirdParty/NVorbis/LICENSE
+Project/01 - MonoGame/ThirdParty/NVorbis/Makefile
+Project/01 - MonoGame/ThirdParty/NVorbis/NVorbis.OpenTKSupport.nuspec
+Project/01 - MonoGame/ThirdParty/NVorbis/NVorbis.nuspec
+Project/01 - MonoGame/ThirdParty/NVorbis/NVorbis.sln
+Project/01 - MonoGame/ThirdParty/NVorbis/NVorbis/BufferedReadStream.cs
+Project/01 - MonoGame/ThirdParty/NVorbis/NVorbis/DataPacket.cs
+Project/01 - MonoGame/ThirdParty/NVorbis/NVorbis/Huffman.cs
+Project/01 - MonoGame/ThirdParty/NVorbis/NVorbis/IContainerReader.cs
+Project/01 - MonoGame/ThirdParty/NVorbis/NVorbis/IPacketProvider.cs
+Project/01 - MonoGame/ThirdParty/NVorbis/NVorbis/IVorbisStreamStatus.cs
+Project/01 - MonoGame/ThirdParty/NVorbis/NVorbis/Makefile
+Project/01 - MonoGame/ThirdParty/NVorbis/NVorbis/Mdct.cs
+Project/01 - MonoGame/ThirdParty/NVorbis/NVorbis/NVorbis.csproj
+Project/01 - MonoGame/ThirdParty/NVorbis/NVorbis/NewStreamEventArgs.cs
+Project/01 - MonoGame/ThirdParty/NVorbis/NVorbis/Ogg/OggContainerReader.cs
+Project/01 - MonoGame/ThirdParty/NVorbis/NVorbis/Ogg/OggCrc.cs
+Project/01 - MonoGame/ThirdParty/NVorbis/NVorbis/Ogg/OggPacket.cs
+Project/01 - MonoGame/ThirdParty/NVorbis/NVorbis/Ogg/OggPacketReader.cs
+Project/01 - MonoGame/ThirdParty/NVorbis/NVorbis/Ogg/OggPageFlags.cs
+Project/01 - MonoGame/ThirdParty/NVorbis/NVorbis/ParameterChangeEventArgs.cs
+Project/01 - MonoGame/ThirdParty/NVorbis/NVorbis/Properties/AssemblyInfo.cs
+Project/01 - MonoGame/ThirdParty/NVorbis/NVorbis/RingBuffer.cs
+Project/01 - MonoGame/ThirdParty/NVorbis/NVorbis/StreamReadBuffer.cs
+Project/01 - MonoGame/ThirdParty/NVorbis/NVorbis/Utils.cs
+Project/01 - MonoGame/ThirdParty/NVorbis/NVorbis/VorbisCodebook.cs
+Project/01 - MonoGame/ThirdParty/NVorbis/NVorbis/VorbisFloor.cs
+Project/01 - MonoGame/ThirdParty/NVorbis/NVorbis/VorbisMapping.cs
+Project/01 - MonoGame/ThirdParty/NVorbis/NVorbis/VorbisMode.cs
+Project/01 - MonoGame/ThirdParty/NVorbis/NVorbis/VorbisReader.cs
+Project/01 - MonoGame/ThirdParty/NVorbis/NVorbis/VorbisResidue.cs
+Project/01 - MonoGame/ThirdParty/NVorbis/NVorbis/VorbisStreamDecoder.cs
+Project/01 - MonoGame/ThirdParty/NVorbis/NVorbis/VorbisTime.cs
+Project/01 - MonoGame/ThirdParty/NVorbis/OpenTKSupport/Logging.cs
+Project/01 - MonoGame/ThirdParty/NVorbis/OpenTKSupport/OggStream.cs
+Project/01 - MonoGame/ThirdParty/NVorbis/OpenTKSupport/OpenTKSupport.csproj
+Project/01 - MonoGame/ThirdParty/NVorbis/OpenTKSupport/Properties/AssemblyInfo.cs
+Project/01 - MonoGame/ThirdParty/NVorbis/OpenTKSupport/packages.config
+Project/01 - MonoGame/ThirdParty/NVorbis/OpenTKSupport/readme.txt
+Project/01 - MonoGame/ThirdParty/NVorbis/README
+Project/01 - MonoGame/ThirdParty/NVorbis/README.md
+Project/01 - MonoGame/ThirdParty/NVorbis/TODO
+Project/01 - MonoGame/ThirdParty/NVorbis/TestApp/NAudioDecodingTests.cs
+Project/01 - MonoGame/ThirdParty/NVorbis/TestApp/OpenTKStreamingTest.cs
+Project/01 - MonoGame/ThirdParty/NVorbis/TestApp/Properties/AssemblyInfo.cs
+Project/01 - MonoGame/ThirdParty/NVorbis/TestApp/TestApp.csproj
+Project/01 - MonoGame/ThirdParty/NVorbis/TestApp/packages.config
+Project/01 - MonoGame/ThirdParty/NVorbis/TestFiles/1test.ogg
+Project/01 - MonoGame/ThirdParty/NVorbis/TestFiles/2test.ogg
+Project/01 - MonoGame/ThirdParty/NVorbis/TestFiles/3test.ogg
+Project/01 - MonoGame/ThirdParty/NVorbis/TestHarness/BufferedReadStreamWrapper.cs
+Project/01 - MonoGame/ThirdParty/NVorbis/TestHarness/Properties/AssemblyInfo.cs
+Project/01 - MonoGame/ThirdParty/NVorbis/TestHarness/StreamReadBufferWrapper.cs
+Project/01 - MonoGame/ThirdParty/NVorbis/TestHarness/TestHarness.csproj
+Project/01 - MonoGame/ThirdParty/NVorbis/UnitTests/BufferedReadStreamTests.cs
+Project/01 - MonoGame/ThirdParty/NVorbis/UnitTests/DataPacketTests.cs
+Project/01 - MonoGame/ThirdParty/NVorbis/UnitTests/ForwardOnlyStream.cs
+Project/01 - MonoGame/ThirdParty/NVorbis/UnitTests/Properties/AssemblyInfo.cs
+Project/01 - MonoGame/ThirdParty/NVorbis/UnitTests/StreamReadBufferTests.cs
+Project/01 - MonoGame/ThirdParty/NVorbis/UnitTests/UnitTests.csproj
+Project/01 - MonoGame/ThirdParty/NVorbis/UnitTests/packages.config
+Project/01 - MonoGame/ThirdParty/NVorbis/publish.cmd
+Build
