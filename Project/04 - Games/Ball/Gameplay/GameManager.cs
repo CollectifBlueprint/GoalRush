@@ -169,6 +169,8 @@ namespace Ball.Gameplay
             }
             m_matchObject = null;
 
+            m_arena = null;
+
             Game.GameProfile.Stats.GamePlayed++;
             Game.GameProfile.Stats.GameTimeMinutes += m_match.Time() / (60 * 1000.0f);
             Game.GameProfile.CommitChanges();

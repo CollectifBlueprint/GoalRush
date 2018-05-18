@@ -261,9 +261,14 @@ namespace Ball
                 }
             }
 
-            float timeDemoS = 60;
-            if (m_stunfestData.IdleTimeMS > timeDemoS * 1000)
-                StartAIDemo();
+            float timeDemoS = 2;
+            if (m_stunfestData.IdleTimeMS > timeDemoS * 1000 && m_stunfestData.IsIdleAIRunning == false)
+            {
+                if (Game.GameManager.Arena == null)
+                    StartAIDemo();
+                else
+                    Reset();
+            }
         }
 
         private void StartAIDemo()
@@ -302,6 +307,8 @@ namespace Ball
 
             m_stunfestData.IsIdleAIRunning = false;
             m_stunfestData.IdleTimeMS = 0;
+
+            Reset();
         }
 
         private void ResetAiTimer()
@@ -332,6 +339,9 @@ namespace Ball
 
             var menuDef = Engine.AssetManager.Get<Menus.MenuDefinition>("Interface/MainMenu.lua::Menu");
             Game.MenuManager.StartMenu(menuDef);
+
+            m_stunfestData.IdleTimeMS = 0;
+            m_stunfestData.IsIdleAIRunning = false;
         }
     }
 }
