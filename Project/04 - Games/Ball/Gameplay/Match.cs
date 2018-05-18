@@ -184,10 +184,11 @@ namespace Ball.Gameplay
             m_timerMSPrevious = m_timerMS;
             m_elapsedTimeMSPrevious = m_elapsedTime;
 
-            m_elapsedTime += Engine.GameTime.ElapsedMS;
-
-            if (Game.StunfestData.IsIdleAIRunning == false)
+            if (Game.StunfestData.IsIdleAIRunning == false || m_matchState != MatchState.FirstPeriod)
+            {
                 m_timerMS -= Engine.GameTime.ElapsedMS;
+                m_elapsedTime += Engine.GameTime.ElapsedMS;
+            }
 
             UpdateMatchSoundEvents();
 

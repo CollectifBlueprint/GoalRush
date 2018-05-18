@@ -52,78 +52,67 @@ namespace Ball
 
     public class StunfestData
     {
-        public float IdleTime = 0;
+        public float IdleTimeMS = 0;
         public bool IsIdleAIRunning = false;
     }
 
     public class Game : BaseEngineComponent
     {
         static Game m_instance;
-        public static Game Instance
-        {
+        public static Game Instance {
             get { return Game.m_instance; }
         }
 
         Asset<ConfigParameters> m_configParameters;
-        public static ConfigParameters ConfigParameters
-        {
+        public static ConfigParameters ConfigParameters {
             get { return m_instance.m_configParameters.Content; }
         }
 
         StatManager m_statManager;
-        public static StatManager Stats
-        {
+        public static StatManager Stats {
             get { return m_instance.m_statManager; }
             set { m_instance.m_statManager = value; }
         }
 
         GameManager m_gameManager;
-        public static GameManager GameManager
-        {
+        public static GameManager GameManager {
             get { return m_instance.m_gameManager; }
             set { m_instance.m_gameManager = value; }
         }
 
         Arena m_arena;
-        public static Arena Arena
-        {
+        public static Arena Arena {
             get { return m_instance.m_arena; }
             set { m_instance.m_arena = value; }
         }
 
         MenuManager m_menuManager;
-        public static MenuManager MenuManager
-        {
+        public static MenuManager MenuManager {
             get { return m_instance.m_menuManager; }
         }
 
         GameStartInfo m_startInfo;
-        public GameStartInfo StartInfo
-        {
+        public GameStartInfo StartInfo {
             get { return m_startInfo; }
         }
 
         GameSession m_gameSession;
-        public static GameSession GameSession
-        {
+        public static GameSession GameSession {
             get { return m_instance.m_gameSession; }
         }
 
         GameProfile m_gameProfil;
-        public static GameProfile GameProfile
-        {
+        public static GameProfile GameProfile {
             get { return m_instance.m_gameProfil; }
         }
 
         OptionManager m_optionMgr;
-        public static OptionManager OptionMgr
-        {
+        public static OptionManager OptionMgr {
             get { return m_instance.m_optionMgr; }
         }
 
         GameMusic m_gameMusic;
-        public static GameMusic GameMusic
-        {
+        public static GameMusic GameMusic {
             get { return m_instance.m_gameMusic; }
         }
 
@@ -162,7 +151,7 @@ namespace Ball
             //Loading configuration
             m_configParameters = Engine.AssetManager.GetAsset<ConfigParameters>("Game/Config.lua::Config");
             Engine.Renderer.SetResolution(
-                m_configParameters.Content.ResolutionX, 
+                m_configParameters.Content.ResolutionX,
                 m_configParameters.Content.ResolutionY);
 
             //Loading starting infos
@@ -195,7 +184,7 @@ namespace Ball
             //Start the game!!!
             StartGame();
         }
-        
+
         private void StartGame()
         {
             if (m_startInfo.NoMenu)
@@ -243,39 +232,85 @@ namespace Ball
             if (!m_startInfo.Release && m_resetCtrl.KeyPressed())
                 Reset();
 
+            m_stunfestData.IdleTimeMS += Engine.GameTime.ElapsedMS;
+
+            for (int i = 0; i < 4; i++)
+            {
+                foreach (var button in Enum.GetValues(typeof(Buttons)))
+                {
+                    if (Engine.Input.GamePadState((PlayerIndex)i).IsButtonDown((Buttons)button))
+                        ResetAiTimer();
+                }
+            }
+
+            if (Engine.Input.KeyboardState().IsKeyDown(Keys.Enter))
+                ResetAiTimer();
+            if (Engine.Input.KeyboardState().IsKeyDown(Keys.Escape))
+                ResetAiTimer();
+
             var iaCtrl = new KeyControl(Keys.End);
-            if(iaCtrl.KeyPressed())
+            if (iaCtrl.KeyPressed())
             {
                 if (m_stunfestData.IsIdleAIRunning == false)
                 {
-                    var colorSchemeDataAsset = Engine.AssetManager.GetAsset<ColorSchemeData>("Game/Colors.lua::ColorShemeArenas");
-                    var colorSchemeTeamAsset = Engine.AssetManager.GetAsset<ColorSchemeData>("Game/Colors.lua::ColorShemeTeams");
-
-                    var matchStartInfo = new MatchStartInfo();
-                    matchStartInfo.Arena.Name = "ArenaLarge";
-                    matchStartInfo.Arena.ColorScheme = colorSchemeDataAsset.Content.ColorSchemes[0];
-                    matchStartInfo.Teams[0].ColorScheme = colorSchemeTeamAsset.Content.ColorSchemes[0];
-                    matchStartInfo.Teams[1].ColorScheme = colorSchemeTeamAsset.Content.ColorSchemes[2];
-
-                    if (Game.MenuManager.CurrentMenu != null)
-                        Game.MenuManager.QuitMenu();
-
-                    m_stunfestData.IsIdleAIRunning = true;
-                    m_stunfestData.IdleTime = 0;
-
-                    Game.GameManager.StartMatch(matchStartInfo);
+                    StartAIDemo();
                 }
                 else
                 {
-                    Game.GameManager.EndMatch();
-                    Game.GameSession.CurrentMatchInfo = new MatchStartInfo();
-                    var menuDef = Engine.AssetManager.Get<Menus.MenuDefinition>("Interface/MainMenu.lua::Menu");
-                    Game.MenuManager.StartMenu(menuDef);
-
-                    m_stunfestData.IsIdleAIRunning = false;
-                    m_stunfestData.IdleTime = 0;
-                }             
+                    QuitAIDemo();
+                }
             }
+
+            float timeDemoS = 60;
+            if (m_stunfestData.IdleTimeMS > timeDemoS * 1000)
+                StartAIDemo();
+        }
+
+        private void StartAIDemo()
+        {
+            if (m_stunfestData.IsIdleAIRunning)
+                return;
+
+            m_stunfestData.IsIdleAIRunning = true;
+            m_stunfestData.IdleTimeMS = 0;
+
+            Engine.Log.Write("StartAIDemo");
+
+            var colorSchemeDataAsset = Engine.AssetManager.GetAsset<ColorSchemeData>("Game/Colors.lua::ColorShemeArenas");
+            var colorSchemeTeamAsset = Engine.AssetManager.GetAsset<ColorSchemeData>("Game/Colors.lua::ColorShemeTeams");
+
+            var matchStartInfo = new MatchStartInfo();
+            matchStartInfo.Arena.Name = "ArenaLarge";
+            matchStartInfo.Arena.ColorScheme = colorSchemeDataAsset.Content.ColorSchemes[0];
+            matchStartInfo.Teams[0].ColorScheme = colorSchemeTeamAsset.Content.ColorSchemes[0];
+            matchStartInfo.Teams[1].ColorScheme = colorSchemeTeamAsset.Content.ColorSchemes[2];
+
+            if (Game.MenuManager.CurrentMenu != null)
+                Game.MenuManager.QuitMenu();
+
+            Game.GameManager.StartMatch(matchStartInfo);
+        }
+
+        private void QuitAIDemo()
+        {
+            Engine.Log.Write("QuitAIDemo");
+
+            Game.GameManager.EndMatch();
+            Game.GameSession.CurrentMatchInfo = new MatchStartInfo();
+            var menuDef = Engine.AssetManager.Get<Menus.MenuDefinition>("Interface/MainMenu.lua::Menu");
+            Game.MenuManager.StartMenu(menuDef);
+
+            m_stunfestData.IsIdleAIRunning = false;
+            m_stunfestData.IdleTimeMS = 0;
+        }
+
+        private void ResetAiTimer()
+        {
+            Engine.Log.Write("ResetAiTimer");
+
+            m_stunfestData.IdleTimeMS = 0;
+            if (m_stunfestData.IsIdleAIRunning)
+                QuitAIDemo();
         }
 
         public override void Shutdown()
