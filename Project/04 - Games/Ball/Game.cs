@@ -261,7 +261,7 @@ namespace Ball
                 }
             }
 
-            float timeDemoS = 2;
+            float timeDemoS = 60;
             if (m_stunfestData.IdleTimeMS > timeDemoS * 1000 && m_stunfestData.IsIdleAIRunning == false)
             {
                 if (Game.GameManager.Arena == null)
