@@ -50,6 +50,12 @@ namespace Ball
         public bool EnableAI = true;
     }
 
+    public class StunfestData
+    {
+        public float IdleTime = 0;
+        public bool IsIdleAIRunning = false;
+    }
+
     public class Game : BaseEngineComponent
     {
         static Game m_instance;
@@ -119,6 +125,11 @@ namespace Ball
         public static GameMusic GameMusic
         {
             get { return m_instance.m_gameMusic; }
+        }
+
+        StunfestData m_stunfestData = new StunfestData();
+        public static StunfestData StunfestData {
+            get { return m_instance.m_stunfestData; }
         }
 
         ScreenShake m_screenShake;
@@ -231,6 +242,40 @@ namespace Ball
 
             if (!m_startInfo.Release && m_resetCtrl.KeyPressed())
                 Reset();
+
+            var iaCtrl = new KeyControl(Keys.End);
+            if(iaCtrl.KeyPressed())
+            {
+                if (m_stunfestData.IsIdleAIRunning == false)
+                {
+                    var colorSchemeDataAsset = Engine.AssetManager.GetAsset<ColorSchemeData>("Game/Colors.lua::ColorShemeArenas");
+                    var colorSchemeTeamAsset = Engine.AssetManager.GetAsset<ColorSchemeData>("Game/Colors.lua::ColorShemeTeams");
+
+                    var matchStartInfo = new MatchStartInfo();
+                    matchStartInfo.Arena.Name = "ArenaLarge";
+                    matchStartInfo.Arena.ColorScheme = colorSchemeDataAsset.Content.ColorSchemes[0];
+                    matchStartInfo.Teams[0].ColorScheme = colorSchemeTeamAsset.Content.ColorSchemes[0];
+                    matchStartInfo.Teams[1].ColorScheme = colorSchemeTeamAsset.Content.ColorSchemes[2];
+
+                    if (Game.MenuManager.CurrentMenu != null)
+                        Game.MenuManager.QuitMenu();
+
+                    m_stunfestData.IsIdleAIRunning = true;
+                    m_stunfestData.IdleTime = 0;
+
+                    Game.GameManager.StartMatch(matchStartInfo);
+                }
+                else
+                {
+                    Game.GameManager.EndMatch();
+                    Game.GameSession.CurrentMatchInfo = new MatchStartInfo();
+                    var menuDef = Engine.AssetManager.Get<Menus.MenuDefinition>("Interface/MainMenu.lua::Menu");
+                    Game.MenuManager.StartMenu(menuDef);
+
+                    m_stunfestData.IsIdleAIRunning = false;
+                    m_stunfestData.IdleTime = 0;
+                }             
+            }
         }
 
         public override void Shutdown()

@@ -20,7 +20,7 @@ namespace Ball.Gameplay
 
     public enum MatchState
     {
-		Init,
+        Init,
         Begin,
         FirstPeriod,
         HalfTime,
@@ -34,8 +34,7 @@ namespace Ball.Gameplay
         Asset<MatchParameters> m_params;
 
         float m_halfTimeDuration;
-        public float HalfTimeDuration
-        {
+        public float HalfTimeDuration {
             get { return m_halfTimeDuration; }
         }
 
@@ -44,14 +43,12 @@ namespace Ball.Gameplay
         float[] m_endGamePauseDuration;
 
         float m_elapsedTime;
-        public float ElapsedTime
-        {
+        public float ElapsedTime {
             get { return m_elapsedTime; }
         }
 
         float m_timerMS;
-        public float TimerMS
-        {
+        public float TimerMS {
             get { return m_timerMS; }
         }
 
@@ -59,8 +56,7 @@ namespace Ball.Gameplay
         float m_elapsedTimeMSPrevious;
 
         MatchState m_matchState;
-        public MatchState MatchState
-        {
+        public MatchState MatchState {
             get { return m_matchState; }
         }
 
@@ -73,7 +69,7 @@ namespace Ball.Gameplay
 
         AudioComponent m_audioCmpTimerPeriodEnd;
         AudioComponent m_audioCmpTimerPeriodLastSeconds;
-        
+
 
         public Match()
         {
@@ -92,7 +88,7 @@ namespace Ball.Gameplay
             m_matchStateStep = 0;
             m_timerMS = m_params.Content.TimeS * 1000;
             m_timerMSPrevious = m_timerMS;
-		
+
             //m_tutorialSprite = new SpriteComponent(Sprite.CreateFromTexture("Graphics/TutoPassAssist.png"), "ArenaUIOverlay0");
             //m_tutorialSprite.AttachedToOwner = false;
             //m_tutorialSprite.Visible = false;
@@ -113,8 +109,8 @@ namespace Ball.Gameplay
         void m_params_OnAssetChanged()
         {
             m_halfTimeDuration = m_params.Content.TimeS * 1000;
-            m_halfTimePauseDuration = new float [] {2000, 1000, 1000} ;
-            m_endGamePauseDuration = new float[] {2000, 1000, 5000} ;
+            m_halfTimePauseDuration = new float[] { 2000, 1000, 1000 };
+            m_endGamePauseDuration = new float[] { 2000, 1000, 5000 };
         }
 
 
@@ -122,7 +118,7 @@ namespace Ball.Gameplay
         {
             if (m_matchState == MatchState.FirstPeriod || m_matchState == MatchState.SecondPeriod)
             {
-                if ( (m_elapsedTime >= (m_halfTimeDuration - 4000) && m_elapsedTimeMSPrevious < (m_halfTimeDuration - 4000))
+                if ((m_elapsedTime >= (m_halfTimeDuration - 4000) && m_elapsedTimeMSPrevious < (m_halfTimeDuration - 4000))
                   || (m_elapsedTime >= (m_halfTimeDuration - 3000) && m_elapsedTimeMSPrevious < (m_halfTimeDuration - 3000))
                   || (m_elapsedTime >= (m_halfTimeDuration - 2000) && m_elapsedTimeMSPrevious < (m_halfTimeDuration - 2000))
                   || (m_elapsedTime >= (m_halfTimeDuration - 1000) && m_elapsedTimeMSPrevious < (m_halfTimeDuration - 1000)))
@@ -139,7 +135,7 @@ namespace Ball.Gameplay
             }
         }
 
-  
+
 
         private void CheckForNewPlayers()
         {
@@ -151,10 +147,10 @@ namespace Ball.Gameplay
                     foreach (var player in Game.GameManager.Players)
                     {
                         if (ctrl.InputIndex == player.PlayerInfo.InputIndex && ctrl.Type == player.PlayerInfo.InputType)
-                       {
-                           controllerIsAssigned = true;
-                           break;
-                       }
+                        {
+                            controllerIsAssigned = true;
+                            break;
+                        }
                     }
 
 
@@ -187,20 +183,22 @@ namespace Ball.Gameplay
 
             m_timerMSPrevious = m_timerMS;
             m_elapsedTimeMSPrevious = m_elapsedTime;
-            
+
             m_elapsedTime += Engine.GameTime.ElapsedMS;
-            m_timerMS -= Engine.GameTime.ElapsedMS;
+
+            if (Game.StunfestData.IsIdleAIRunning == false)
+                m_timerMS -= Engine.GameTime.ElapsedMS;
 
             UpdateMatchSoundEvents();
 
-			if (m_matchState == MatchState.Init) 
-			{
-				if (m_elapsedTime > 0) 
-				{
-					m_elapsedTime = 0;
-					ChangeState(MatchState.Begin);
-				}
-			}
+            if (m_matchState == MatchState.Init)
+            {
+                if (m_elapsedTime > 0)
+                {
+                    m_elapsedTime = 0;
+                    ChangeState(MatchState.Begin);
+                }
+            }
 
             if (m_matchState == MatchState.Begin)
             {
@@ -222,9 +220,9 @@ namespace Ball.Gameplay
                 }
             }
             else if (m_matchState == MatchState.HalfTime)
-            {                
+            {
                 Ball ball = Game.GameManager.Ball;
-           
+
                 if (m_matchStateStep == 0 && m_elapsedTime >= m_halfTimePauseDuration[0])
                 {
                     ball.BodyCmp.Body.LinearDamping += 0.005f * Engine.GameTime.ElapsedMS;
@@ -244,7 +242,7 @@ namespace Ball.Gameplay
                 else if (m_matchStateStep == 1 && m_elapsedTime >= m_halfTimePauseDuration[1])
                 {
                     m_elapsedTime = 0;
-                    m_matchStateStep = 4;;
+                    m_matchStateStep = 4; ;
 
                     Engine.World.EventManager.ThrowEvent((int)EventId.HalfTimeTransition);
 
@@ -260,12 +258,12 @@ namespace Ball.Gameplay
                         screenFade.StartFade(ScreenFade.FadeType.FadeIn, 500, true);
                     }
                 }
-      
+
                 else if (m_matchStateStep == 2 && m_elapsedTime >= m_tutorialDisplayDuration)
                 {
                     m_elapsedTime = 0;
                     m_matchStateStep = 4;
-                    
+
                     m_tutorialSprite.Visible = false;
                     ScreenFade screenFade = Owner.FindComponent<ScreenFade>();
                     screenFade.StartFade(ScreenFade.FadeType.FadeIn, 1000, true);
@@ -296,21 +294,21 @@ namespace Ball.Gameplay
             else if (m_matchState == MatchState.End)
             {
                 Ball ball = Game.GameManager.Ball;
-                
+
                 if (m_matchStateStep == 0 && m_elapsedTime >= m_endGamePauseDuration[0])
                 {
-                     ball.BodyCmp.Body.LinearDamping += 0.005f * Engine.GameTime.ElapsedMS;
+                    ball.BodyCmp.Body.LinearDamping += 0.005f * Engine.GameTime.ElapsedMS;
 
-                     if (ball.Player != null || !ball.BodyCmp.Body.Awake || ball.BodyCmp.Body.LinearVelocity.LengthSquared() < 0.01f)
-                     {
-                         m_elapsedTime = 0;
-                         m_matchStateStep++;
-                         ball.BodyCmp.Body.LinearDamping = ball.Parameters.Physic.LinearDamping;
+                    if (ball.Player != null || !ball.BodyCmp.Body.Awake || ball.BodyCmp.Body.LinearVelocity.LengthSquared() < 0.01f)
+                    {
+                        m_elapsedTime = 0;
+                        m_matchStateStep++;
+                        ball.BodyCmp.Body.LinearDamping = ball.Parameters.Physic.LinearDamping;
 
-                         ScreenFade screenFade = new ScreenFade();
-                         Owner.Attach(screenFade);
-                         screenFade.StartFade(ScreenFade.FadeType.FadeOut, 500, false);
-                     }
+                        ScreenFade screenFade = new ScreenFade();
+                        Owner.Attach(screenFade);
+                        screenFade.StartFade(ScreenFade.FadeType.FadeOut, 500, false);
+                    }
                 }
                 else if (m_matchStateStep == 1 && m_elapsedTime >= m_endGamePauseDuration[1])
                 {
@@ -348,7 +346,8 @@ namespace Ball.Gameplay
                     m_goTextTimerMS.Start();
                     Engine.World.EventManager.ThrowEvent((int)EventId.FirstPeriod);
                     break;
-                case MatchState.HalfTime:;
+                case MatchState.HalfTime:
+                    ;
                     m_timerMS = m_halfTimePauseDuration[0];
                     Engine.World.EventManager.ThrowEvent((int)EventId.HalfTime);
                     break;
@@ -361,7 +360,7 @@ namespace Ball.Gameplay
                     Engine.World.EventManager.ThrowEvent((int)EventId.SecondPeriod);
                     break;
                 case MatchState.End:
-                    m_timerMS =  m_endGamePauseDuration[0];
+                    m_timerMS = m_endGamePauseDuration[0];
                     Engine.World.EventManager.ThrowEvent((int)EventId.MatchEnd);
                     break;
             }
@@ -391,7 +390,7 @@ namespace Ball.Gameplay
         {
             if (m_matchState == Gameplay.MatchState.Begin)
                 return m_halfTimeDuration;
-            
+
             if (m_matchState == Gameplay.MatchState.HalfTime)
                 return m_halfTimeDuration;
 
