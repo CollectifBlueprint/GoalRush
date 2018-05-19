@@ -28,6 +28,7 @@ using Ball.Audio;
 using Ball.Graphics;
 using Ball.Menus;
 using LBE.Graphics.Particles;
+using Ball.MainMenu.Scripts;
 #endregion
 
 namespace Ball
@@ -239,14 +240,14 @@ namespace Ball
                 foreach (var button in Enum.GetValues(typeof(Buttons)))
                 {
                     if (Engine.Input.GamePadState((PlayerIndex)i).IsButtonDown((Buttons)button))
-                        ResetAiTimer();
+                        ResetAiTimerOrQuit();
                 }
             }
 
             if (Engine.Input.KeyboardState().IsKeyDown(Keys.Enter))
-                ResetAiTimer();
+                ResetAiTimerOrQuit();
             if (Engine.Input.KeyboardState().IsKeyDown(Keys.Escape))
-                ResetAiTimer();
+                ResetAiTimerOrQuit();
 
             var iaCtrl = new KeyControl(Keys.End);
             if (iaCtrl.KeyPressed())
@@ -264,7 +265,7 @@ namespace Ball
             float timeDemoS = 60;
             if (m_stunfestData.IdleTimeMS > timeDemoS * 1000 && m_stunfestData.IsIdleAIRunning == false)
             {
-                if (Game.GameManager.Arena == null)
+                if (Game.MenuManager.CurrentMenu != null && Game.MenuManager.CurrentMenu.Script.GetType() == typeof(AltMainMenuScript))
                     StartAIDemo();
                 else
                     Reset();
@@ -287,8 +288,11 @@ namespace Ball
             var matchStartInfo = new MatchStartInfo();
             matchStartInfo.Arena.Name = "ArenaLarge";
             matchStartInfo.Arena.ColorScheme = colorSchemeDataAsset.Content.ColorSchemes[0];
-            matchStartInfo.Teams[0].ColorScheme = colorSchemeTeamAsset.Content.ColorSchemes[0];
-            matchStartInfo.Teams[1].ColorScheme = colorSchemeTeamAsset.Content.ColorSchemes[2];
+
+            var iColorIdx1 = Engine.Random.Next(0, 2);
+            var iColorIdx2 = Engine.Random.Next(3, 5);
+            matchStartInfo.Teams[0].ColorScheme = colorSchemeTeamAsset.Content.ColorSchemes[iColorIdx1];
+            matchStartInfo.Teams[1].ColorScheme = colorSchemeTeamAsset.Content.ColorSchemes[iColorIdx2];
 
             if (Game.MenuManager.CurrentMenu != null)
                 Game.MenuManager.QuitMenu();
@@ -298,23 +302,14 @@ namespace Ball
 
         private void QuitAIDemo()
         {
-            Engine.Log.Write("QuitAIDemo");
-
-            Game.GameManager.EndMatch();
-            Game.GameSession.CurrentMatchInfo = new MatchStartInfo();
-            var menuDef = Engine.AssetManager.Get<Menus.MenuDefinition>("Interface/MainMenu.lua::Menu");
-            Game.MenuManager.StartMenu(menuDef);
-
             m_stunfestData.IsIdleAIRunning = false;
             m_stunfestData.IdleTimeMS = 0;
 
             Reset();
         }
 
-        private void ResetAiTimer()
+        private void ResetAiTimerOrQuit()
         {
-            Engine.Log.Write("ResetAiTimer");
-
             m_stunfestData.IdleTimeMS = 0;
             if (m_stunfestData.IsIdleAIRunning)
                 QuitAIDemo();
