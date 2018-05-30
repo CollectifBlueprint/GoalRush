@@ -12,8 +12,7 @@ namespace Ball.Gameplay.Players.AI
     public class Script
     {
         PlayerAIController m_playerAI;
-        public PlayerAIController PlayerAI
-        {
+        public PlayerAIController PlayerAI {
             get { return m_playerAI; }
             set { m_playerAI = value; }
         }
@@ -49,14 +48,14 @@ namespace Ball.Gameplay.Players.AI
                 if (!PlayerAI.Player.IsShotCharging)
                     PlayerAI.StartShotCharge();
 
-                if(PlayerAI.Player.IsShotCharged)
+                if (PlayerAI.Player.IsShotCharged)
                     PlayerAI.ShootCharged(dir);
             }
-            else if (Game.GameManager.Ball != null && Game.GameManager.Ball.Player == null) 
+            else if (Game.GameManager.Ball != null && Game.GameManager.Ball.Player == null)
             {
                 PlayerAI.NavigateToBall();
             }
-        } 
+        }
     }
 
     public class AssistAndDefendScript : Script
@@ -70,129 +69,86 @@ namespace Ball.Gameplay.Players.AI
 
         public override void Update()
         {
+            PlayerAI.TackleIfInRange();
+
+            if (PlayerAI.Player.TeamMate.Ball != null)
+                AssistMode();
+            else if (PlayerAI.Player.Ball != null)
+                AttackMode();
+            else
+                DefenseMode();
+        }
+
+        private void AssistMode()
+        {
+            //If a player in close to the teamate, tackle it
+            foreach (var player in PlayerAI.Player.Opponents)
+            {
+                bool tackle = false;
+                float assistTackleDistance = Engine.Debug.EditSingle("AssistTackleRange", 180);
+                if (Vector2.Distance(player.Position, PlayerAI.Player.Position) < assistTackleDistance)
+                    tackle = PlayerAI.TackleIfInRange();
+            }
+
+            //Assist the teammate
+            PlayerAI.NavigateToAssistPosition();
+        }
+
+        private void DefenseMode()
+        {
             var ballMap = Game.GameManager.Navigation.PotentialMaps["BallMap"];
             float ballValue = PlayerAI.MapValue(ballMap, PlayerAI.Player.Position);
             float teamMateBallValue = PlayerAI.MapValue(ballMap, PlayerAI.Player.TeamMate.Position);
             bool canTakeBall = PlayerAI.Player.BallTrigger.Enabled && !Game.GameManager.Ball.Properties.Untakable && !Game.GameManager.Ball.Properties.PassThroughPlayer;
             bool otherTeamHasBall = canTakeBall && Game.GameManager.Ball != null && Game.GameManager.Ball.Player != null;
-            float defenseValue = DefenseValue(PlayerAI.Player.Team, PlayerAI.Player.Position);
-            float attackValue = ShootValue(PlayerAI.Player.Team, PlayerAI.Player.Position);
+            float defenseValue = GetDefenseValue(PlayerAI.Player.Team, PlayerAI.Player.Position);
+            float attackValue = GetShootValue(PlayerAI.Player.Team, PlayerAI.Player.Position);
             float relativePosition = attackValue / defenseValue;
-            float teamMateDefenseValue = DefenseValue(PlayerAI.Player.Team, PlayerAI.Player.TeamMate.Position);
-            float teamMateAttackValue = ShootValue(PlayerAI.Player.Team, PlayerAI.Player.TeamMate.Position);
+            float teamMateDefenseValue = GetDefenseValue(PlayerAI.Player.Team, PlayerAI.Player.TeamMate.Position);
+            float teamMateAttackValue = GetShootValue(PlayerAI.Player.Team, PlayerAI.Player.TeamMate.Position);
             float teamMateRelativePosition = teamMateAttackValue / teamMateDefenseValue;
             float otherTeamAttackValue = float.NegativeInfinity;
             if (otherTeamHasBall)
-                otherTeamAttackValue = DefenseValue(PlayerAI.Player.Team, Game.GameManager.Ball.Position);
+                otherTeamAttackValue = GetDefenseValue(PlayerAI.Player.Team, Game.GameManager.Ball.Position);
 
-            float ballDefensePosition = DefenseValue(PlayerAI.Player.Team, Game.GameManager.Ball.Position);
-            float ballAttackPosition = ShootValue(PlayerAI.Player.Team, Game.GameManager.Ball.Position);
+            float ballDefensePosition = GetDefenseValue(PlayerAI.Player.Team, Game.GameManager.Ball.Position);
+            float ballAttackPosition = GetShootValue(PlayerAI.Player.Team, Game.GameManager.Ball.Position);
             float ballRelativePosition = ballAttackPosition / ballDefensePosition; //ballRelativePosition > 1 if in attack
 
-            //var sb = new StringBuilder();
-            //sb.AppendLine("ballValue: " + ballValue);
-            //sb.AppendLine("ballDefensePosition: " + ballDefensePosition);
-            //sb.AppendLine("teamMateDefenseValue: " + teamMateDefenseValue);
-            //sb.AppendLine();
-            //sb.AppendLine();
-            //m_debugTxtCmp.Text = sb.ToString();
-            //m_debugTxtCmp.AlignementVertical = TextAlignementVertical.Down;
-            //m_debugTxtCmp.Alignement = TextAlignementHorizontal.Center;
-            //m_debugTxtCmp.Style.Color = Color.Black;
+            float ballThreshold = 0.9f;
+            float defThreshold = 0.65f;
+            float mateDefThreshold = 0.85f;
+            Engine.Debug.Screen.AddCircle(PlayerAI.Position, 180);
 
-            if (PlayerAI.Player.Ball == null)
+            if ((PlayerAI.Info.BallInGoal || Game.Arena.SelectedLauncher != null) && (PlayerAI.Info.GoalTeam != null && PlayerAI.Player.Team != PlayerAI.Info.GoalTeam))
             {
-                float smoothRand = (float)Math.Cos( 2 * Engine.GameTime.TimeMS / 1000);
-                if (smoothRand > 0)
-                {
-                    PlayerAI.TackleIfInRange();
-                }
+                MoveToDefense();
             }
-
-            if (Game.GameManager.Ball != null)
-                Engine.Log.Debug("Ball", "Ok");
-            else
-                Engine.Log.Debug("Ball", "Null");
-
-            if (Game.Arena.SelectedLauncher != null)
-                Engine.Log.Debug("Launcher", "Ok");
-            else
-                Engine.Log.Debug("Launcher", "Null");
-
-            //Assist teamate
-            if (PlayerAI.Player.TeamMate.Ball != null)
+            else if (canTakeBall && ballValue >= teamMateBallValue)
             {
-                Assist();
-                return;
+                PlayerAI.NavigateToBall();
             }
-
-            //Player has the ball
-            if (PlayerAI.Player.Ball != null)
+            else if (defenseValue < teamMateDefenseValue && ballDefensePosition > ballThreshold && defenseValue < defThreshold && teamMateDefenseValue < mateDefThreshold)
             {
-                //Navigate towards the goal
-                AttackWithBall();
-
-                //Set a delay before shooting the ball
-                float minTimeBeforeShoot = Engine.Debug.EditSingle("PlayerShootDelay", 1200);
-                if (Engine.GameTime.TimeMS - PlayerAI.Info.BallTakenTime < minTimeBeforeShoot)
-                    return;
-
-                HandleBall();
-            }
-            else
-            {
-                //Vector2 goalPos = Vector2.Zero;
-                //if (Game.Arena.LeftGoal.Team == PlayerAI.Player.Team)
-                //    goalPos = Game.Arena.LeftGoal.Position;
-                //if (Game.Arena.LeftGoal.Team == PlayerAI.Player.Team)
-                //    goalPos = Game.Arena.LeftGoal.Position;
-                float ballThreshold = 0.9f;
-                float defThreshold = 0.65f;
-                float mateDefThreshold = 0.85f;
-                Engine.Debug.Screen.AddCircle(PlayerAI.Position, 180);
-
-				if ((PlayerAI.Info.BallInGoal || Game.Arena.SelectedLauncher != null) && (PlayerAI.Info.GoalTeam != null && PlayerAI.Player.Team != PlayerAI.Info.GoalTeam))
-				{
-						Defend ();
-				}
-			
-				else if (canTakeBall && ballValue >= teamMateBallValue)
-                {
-                    PlayerAI.NavigateToBall();
-                    Engine.Log.Debug("State " + PlayerAI.Player.PlayerIndex, "Move to ball");
-                }
-                else if (defenseValue < teamMateDefenseValue && ballDefensePosition > ballThreshold && defenseValue < defThreshold && teamMateDefenseValue < mateDefThreshold)
-                {
-                    if (!PlayerAI.Player.TeamMate.Properties.Blink)
-                        PlayerAI.Blink(Vector2.Zero);
-                    else
-                        Defend();
-                }
-                else if (!PlayerAI.Player.BallTrigger.Enabled)
-                {
-                    if (Game.Arena.SelectedLauncher != null)
-                    {
-                        //Get launcher direction
-                        var launcher = Game.Arena.SelectedLauncher;
-                        Defend();
-                    }
-                    else
-                    {
-                        Defend();
-                    }
-
-                    Engine.Log.Debug("State " + PlayerAI.Player.PlayerIndex, "Defend");
-                }
+                if (!PlayerAI.Player.TeamMate.Properties.Blink)
+                    PlayerAI.Blink(Vector2.Zero);
                 else
-                {
-                    PlayerAI.Assist();
-                    Engine.Log.Debug("State " + PlayerAI.Player.PlayerIndex, "Assist");
-                }
+                    MoveToDefense();
+            }
+            else if (!PlayerAI.Player.BallTrigger.Enabled)
+            {
+                MoveToDefense();
+            }
+            else
+            {
+                PlayerAI.NavigateToAssistPosition();
             }
         }
 
-        private void HandleBall()
+        private void AttackMode()
         {
+            Engine.Log.Debug("State " + PlayerAI.Player.PlayerIndex, "Attack");
+
             //Compute a tactical value based on the distance to opponents
             float tacticalDistance = 300;
             float tacticalValue = Math.Min(
@@ -208,40 +164,69 @@ namespace Ball.Gameplay.Players.AI
             bool mateCanShoot;
             CheckShootPossible(out canShoot, out mateCanShoot);
 
-            float shootValue = ShootValue(PlayerAI.Player.Team, PlayerAI.Player.Position);
-            float mateShootValue = ShootValue(PlayerAI.Player.Team, PlayerAI.Player.TeamMate.Position);
+            float shootValue = GetShootValue(PlayerAI.Player.Team, PlayerAI.Player.Position);
+            float mateShootValue = GetShootValue(PlayerAI.Player.Team, PlayerAI.Player.TeamMate.Position);
 
             float passTacticalValue = 0.75f;
             float dangerTacticalValue = 0.40f;
-            if (!canShoot && mateCanShoot && mateTacticalValue > passTacticalValue)
-            {
-                PlayerAI.AimAtPosition(PlayerAI.Player.TeamMate.Position);
-                if (PlayerAI.IsAimingAtPosition(PlayerAI.Player.TeamMate.Position))
-                    PlayerAI.Pass(PlayerAI.GetAim());
 
-                Engine.Log.Debug("State " + PlayerAI.Player.PlayerIndex, "Pass for shoot");
+
+            //Set a delay before shooting the ball
+            float minTimeBeforeShoot = Engine.Debug.EditSingle("PlayerShootDelay", 1200);
+            if (Engine.GameTime.TimeMS - PlayerAI.Info.BallTakenTime < minTimeBeforeShoot)
+                return;
+
+            //If possible, shoot
+            if (canShoot)
+            {
+                PlayerAI.ShootIfPossible();
             }
-            else if (!canShoot && tacticalValue < dangerTacticalValue && mateTacticalValue > tacticalValue)
+            //If mate can shoot has good tactical value, pass the ball
+            else if (mateCanShoot && mateTacticalValue > passTacticalValue)
             {
-                PlayerAI.AimAtPosition(PlayerAI.Player.TeamMate.Position);
-                if (PlayerAI.IsAimingAtPosition(PlayerAI.Player.TeamMate.Position))
-                    PlayerAI.Pass(PlayerAI.GetAim());
-
-                Engine.Log.Debug("State " + PlayerAI.Player.PlayerIndex, "Pass for panic");
+                AimAndPass(PlayerAI.Player.TeamMate.Position);
             }
-            else if (!canShoot && mateTacticalValue > tacticalValue && mateShootValue > shootValue)
+            //If personal tactical value is bad, do an emergency pass
+            else if (tacticalValue < dangerTacticalValue && mateTacticalValue > tacticalValue)
             {
-                PlayerAI.AimAtPosition(PlayerAI.Player.TeamMate.Position);
-                if (PlayerAI.IsAimingAtPosition(PlayerAI.Player.TeamMate.Position))
-                    PlayerAI.Pass(PlayerAI.GetAim());
-
-                Engine.Log.Debug("State " + PlayerAI.Player.PlayerIndex, "Pass");
+                AimAndPass(PlayerAI.Player.TeamMate.Position);
+            }
+            //If mate has better tactical value, pass the ball
+            else if (mateTacticalValue > tacticalValue && mateShootValue > shootValue)
+            {
+                AimAndPass(PlayerAI.Player.TeamMate.Position);
             }
             else
             {
-                PlayerAI.ShootIfPossible();
-                Engine.Log.Debug("State " + PlayerAI.Player.PlayerIndex, "Attack");
+                //Always navigate towards the goal
+                MoveToShootPosition();
             }
+        }
+
+        private void MoveToDefense()
+        {
+            Engine.Log.Debug("State " + PlayerAI.Player.PlayerIndex, "Defend");
+            PotentialMap defenseMap = null;
+            if (Game.Arena.LeftGoal.Team == PlayerAI.Player.Team)
+                defenseMap = Game.GameManager.Navigation.PotentialMaps["ShootLeft"];
+            else
+                defenseMap = Game.GameManager.Navigation.PotentialMaps["ShootRight"];
+            PlayerAI.NavigateToBestValue(defenseMap);
+        }
+
+        private void MoveToInitialPosition()
+        {
+            PlayerAI.MoveToPosition(PlayerAI.Player.InitialPosition);
+        }
+
+        public void MoveToShootPosition()
+        {
+            PotentialMap shootMap = null;
+            if (Game.Arena.LeftGoal.Team == PlayerAI.Player.Team)
+                shootMap = Game.GameManager.Navigation.PotentialMaps["ShootRight"];
+            else
+                shootMap = Game.GameManager.Navigation.PotentialMaps["ShootLeft"];
+            PlayerAI.NavigateToBestValue(shootMap);
         }
 
         private void CheckShootPossible(out bool canShoot, out bool mateCanShoot)
@@ -254,48 +239,7 @@ namespace Ball.Gameplay.Players.AI
             canShoot = canShoot && NavigationManager.TestInterception(otherTeam, PlayerAI.Player.Position, goal.Position);
         }
 
-        private void Assist()
-        {
-            //If a player in close to the teamate, tackle it
-            foreach (var player in PlayerAI.Player.Opponents)
-            {
-                bool tackle = false;
-                float assistTackleDistance = Engine.Debug.EditSingle("AssistTackleRange", 180);
-                if (Vector2.Distance(player.Position, PlayerAI.Player.Position) < assistTackleDistance)
-                    tackle = PlayerAI.TackleIfInRange();
-            }
-
-            //Assist the teammate
-            PlayerAI.Assist();
-        }
-
-        private void Defend()
-        {
-            PotentialMap shootMap = null;
-            if (Game.Arena.LeftGoal.Team == PlayerAI.Player.Team)
-                shootMap = Game.GameManager.Navigation.PotentialMaps["ShootLeft"];
-            else
-                shootMap = Game.GameManager.Navigation.PotentialMaps["ShootRight"];
-            PlayerAI.NavigateToBestValue(shootMap);
-        }
-
-		private void GoToInitPosition()
-		{
-			PlayerAI.MoveToPosition (PlayerAI.Player.InitialPosition);
-		}
-			
-
-        public void AttackWithBall()
-        {
-            PotentialMap shootMap = null;
-            if (Game.Arena.LeftGoal.Team == PlayerAI.Player.Team)
-                shootMap = Game.GameManager.Navigation.PotentialMaps["ShootRight"];
-            else
-                shootMap = Game.GameManager.Navigation.PotentialMaps["ShootLeft"];
-            PlayerAI.NavigateToBestValue(shootMap);
-        }
-
-        public float ShootValue(Team team, Vector2 pos)
+        public float GetShootValue(Team team, Vector2 pos)
         {
             PotentialMap shootMap = null;
             if (Game.Arena.LeftGoal.Team == team)
@@ -307,7 +251,7 @@ namespace Ball.Gameplay.Players.AI
             return shootMap.Grid[index].Value;
         }
 
-        public float DefenseValue(Team team, Vector2 pos)
+        public float GetDefenseValue(Team team, Vector2 pos)
         {
             PotentialMap shootMap = null;
             if (Game.Arena.LeftGoal.Team == team)
@@ -317,6 +261,13 @@ namespace Ball.Gameplay.Players.AI
 
             Point index = Game.GameManager.Navigation.IndexFromPosition(pos);
             return shootMap.Grid[index].Value;
+        }
+
+        private void AimAndPass(Vector2 position)
+        {
+            PlayerAI.AimAtPosition(position);
+            if (PlayerAI.IsAimingAtPosition(position))
+                PlayerAI.Pass(PlayerAI.GetAim());
         }
     }
 }
