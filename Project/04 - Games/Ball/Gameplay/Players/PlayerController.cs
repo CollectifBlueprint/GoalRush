@@ -69,7 +69,7 @@ namespace Ball.Gameplay
 
         public void ShootCharged(Vector2 direction)
         {
-            m_player.ShootBallCharged();
+            m_player.ShootBallCharged(direction);
             m_player.StopChargingShot();
         }
 
