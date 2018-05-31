@@ -77,4 +77,7 @@ Edit = {
 	AntennaLength = 10,
 	AntennaSpringConstant = 0.0002,
 	AntennaSpringDampening = 0.85,
+
+	AIAgressiveness = 0.2,
+	AIPrecision = 0.2,
 }

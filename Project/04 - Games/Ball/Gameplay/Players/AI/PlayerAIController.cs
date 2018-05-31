@@ -20,7 +20,21 @@ namespace Ball.Gameplay.Players.AI
 
         public bool BallShotByTeam;
         public bool BallInGoal;
-		public Team GoalTeam; 
+        public Team GoalTeam;
+    }
+
+    public class AIParameters
+    {
+        public float Agressiveness;
+        public float Precision;
+    }
+
+    public class AIState
+    {
+        public float AgressivenessCoef;
+        public float ShootingPrecision;
+
+        public float SkillFluctuationPhase;
     }
 
     public class PlayerAIController : PlayerController
@@ -33,20 +47,17 @@ namespace Ball.Gameplay.Players.AI
         KeyControl m_mouseCtrl;
 
         PotentialMap m_mouseMap;
-        public PotentialMap MouseMap
-        {
+        public PotentialMap MouseMap {
             get { return m_mouseMap; }
         }
 
         PotentialMap m_assistMap;
-        public PotentialMap AssistMap
-        {
+        public PotentialMap AssistMap {
             get { return m_assistMap; }
         }
 
         GameInfo m_gameInfos;
-        public GameInfo Info
-        {
+        public GameInfo Info {
             get { return m_gameInfos; }
             set { m_gameInfos = value; }
         }
@@ -54,10 +65,13 @@ namespace Ball.Gameplay.Players.AI
         PotentialMapInfluencePoint m_mouseSource;
         Script m_script;
 
+        AIParameters m_aiParams;
+        AIState m_aiState;
+
         public override void Start()
         {
             m_mouseCtrl = new KeyControl(MouseButtons.Left);
-            
+
             m_mouseMap = new PotentialMap(Game.GameManager.Navigation, PotentialMapType.Linear);
             m_mouseSource = new PotentialMapInfluencePoint();
             m_mouseSource.Radius = 60;
@@ -69,6 +83,13 @@ namespace Ball.Gameplay.Players.AI
             m_assistMap.Sources.Add(new AssistPlayerPotentialSource() { Assistee = Player.TeamMate, Assistant = Player });
             m_assistMap.LinearParameters.SpatialDecay = 0.03f;
             Game.GameManager.Navigation.PotentialMaps.Add("AssistMap" + (int)Player.PlayerIndex, m_assistMap);
+
+            m_aiParams = new AIParameters();
+            m_aiParams.Agressiveness = Engine.Debug.EditSingle("AIAgressiveness");
+            m_aiParams.Precision = Engine.Debug.EditSingle("AIPrecision");
+
+            m_aiState = new AIState();
+            m_aiState.SkillFluctuationPhase = Engine.Random.NextFloat(0, 1000);
 
             m_script = new AssistAndDefendScript();
             m_script.PlayerAI = this;
@@ -124,6 +145,26 @@ namespace Ball.Gameplay.Players.AI
                 CancelPassCharge();
             }
 
+            //Update AI coefficients
+            m_aiParams.Agressiveness = Engine.Debug.EditSingle("AIAgressiveness", 0.5f);
+            m_aiParams.Precision = Engine.Debug.EditSingle("AIPrecision", 0.5f);
+
+            float period = 12.0f;
+            var agressiveCoefRaw = 0.5f + 0.5f * LBE.MathHelper.Cos(period, Engine.GameTime.TimeMS / 1000, m_aiState.SkillFluctuationPhase);
+            var shootCoefRaw = 0.5f + 0.5f * LBE.MathHelper.Cos(period, Engine.GameTime.TimeMS / 1000, m_aiState.SkillFluctuationPhase);
+            var precisionCoefRaw = 0.5f + 0.5f * LBE.MathHelper.Cos(period * 1.3f, Engine.GameTime.TimeMS / 1000, m_aiState.SkillFluctuationPhase);
+
+            m_aiState.AgressivenessCoef = LBE.MathHelper.Lerp(m_aiParams.Agressiveness, 1.0f, agressiveCoefRaw * agressiveCoefRaw);
+            m_aiState.ShootingPrecision = LBE.MathHelper.Lerp(m_aiParams.Precision, 1.0f, precisionCoefRaw * precisionCoefRaw);
+
+            //if (Player.PlayerIndex != PlayerIndex.Two)
+            //    return;
+            if (Player.Team.TeamID == TeamId.TeamOne)
+                return;
+
+            Engine.Log.Debug("AIAgressiveness", m_aiState.AgressivenessCoef.ToString("0.0"));
+            Engine.Log.Debug("AIPrecision", m_aiState.ShootingPrecision.ToString("0.0"));
+
             if (Game.GameManager.Match.MatchState == MatchState.FirstPeriod || Game.GameManager.Match.MatchState == MatchState.SecondPeriod)
                 m_script.Update();
         }
@@ -141,8 +182,8 @@ namespace Ball.Gameplay.Players.AI
 
         public void OnGoal(object eventParameter)
         {
-			m_gameInfos.BallInGoal = true;
-			m_gameInfos.GoalTeam = (Team)((object[])eventParameter)[0];
+            m_gameInfos.BallInGoal = true;
+            m_gameInfos.GoalTeam = (Team)((object[])eventParameter)[0];
         }
 
         public void OnKickOff(object eventParameter)
@@ -152,7 +193,7 @@ namespace Ball.Gameplay.Players.AI
 
         public void OnPlayerShootBall(object eventParameter)
         {
-            Player player = (Player)((object[])eventParameter)[0];   
+            Player player = (Player)((object[])eventParameter)[0];
             m_gameInfos.BallShotTime = Engine.GameTime.TimeMS;
 
             if (player == Player || player == Player.TeamMate)
@@ -166,11 +207,6 @@ namespace Ball.Gameplay.Players.AI
             m_gameInfos.BallTakenTime = Engine.GameTime.TimeMS;
         }
 
-        public void Assist()
-        {
-            NavigateToBestValue(m_assistMap);            
-        }
-
         public float MapValue(PotentialMap map, Vector2 position)
         {
             Point index = Game.GameManager.Navigation.IndexFromPosition(position);
@@ -180,7 +216,7 @@ namespace Ball.Gameplay.Players.AI
         }
 
         public void NavigateToBestValue(PotentialMap map)
-        {            
+        {
             Point index = Game.GameManager.Navigation.IndexFromPosition(Player.Position);
 
             if (Game.GameManager.Navigation.Parameters.Debug)
@@ -226,9 +262,14 @@ namespace Ball.Gameplay.Players.AI
         }
 
         public void NavigateTo(Vector2 position)
-        {            
+        {
             m_mouseSource.Position = position;
             NavigateToBestValue(m_mouseMap);
+        }
+
+        public void NavigateToAssistPosition()
+        {
+            NavigateToBestValue(m_assistMap);
         }
 
         public void NavigateToBall()
@@ -248,29 +289,19 @@ namespace Ball.Gameplay.Players.AI
             }
         }
 
-        public bool TackleIfInRange()
-        {
-            float tackleDist = Engine.Debug.EditSingle("TackleDistance", 75);
-            foreach (var player in Player.Opponents)
-            {
-                if (Vector2.Distance(player.Position, Player.Position) < tackleDist)
-                {
-                    Tackle(player.Position - player.Position);
-                    return true;
-                }
-            } 
-            return false;
-        }
-
         public void ShootIfPossible()
         {
             Goal goal = Game.Arena.LeftGoal.Team == Player.Team ? Game.Arena.RightGoal : Game.Arena.LeftGoal;
             Team otherTeam = Player.Team.TeamID == TeamId.TeamOne ? Game.GameManager.Teams[1] : Game.GameManager.Teams[0];
 
             bool canShoot = NavigationManager.DoubleRayCast(Player.Position, goal.Position, 20);
-            bool intercept = NavigationManager.TestInterception(otherTeam, Player.Position, goal.Position);
+            bool noInterception = NavigationManager.TestInterception(otherTeam, Player.Position, goal.Position);
 
-            float distCharge = 350;
+            //Compute distance charge based on agressiveness
+            float distChargeMin = 350;
+            float distChargeMax = 550;
+            float distCharge = LBE.MathHelper.Lerp(distChargeMax, distChargeMin, m_aiState.AgressivenessCoef);
+
             float opponentDistance = Math.Min(
                 Vector2.Distance(otherTeam.Players[0].Position, Player.Position),
                 Vector2.Distance(otherTeam.Players[1].Position, Player.Position));
@@ -278,23 +309,62 @@ namespace Ball.Gameplay.Players.AI
             var goalDirection = goal.Position - Player.Position;
             goalDirection.Normalize();
 
+            float maxRandomAngle = 3.14f * 0.3f;
+
             Aim(goalDirection);
 
             if (canShoot && Player.IsShotCharging && Player.IsShotCharged)
             {
-                if(IsAiming(goalDirection))
-                    ShootCharged(goalDirection);
+                if (IsAiming(goalDirection))
+                {
+                    var shootDirection = RandomShootingDirection(goalDirection, maxRandomAngle, m_aiState.ShootingPrecision);
+                    ShootCharged(shootDirection);
+                }
             }
-            else if (canShoot && intercept)
+            else if (canShoot && noInterception)
             {
                 if (IsAiming(goalDirection))
-                    Shoot(goalDirection);
+                {
+                    var shootDirection = RandomShootingDirection(goalDirection, maxRandomAngle, m_aiState.ShootingPrecision);
+                    Shoot(shootDirection);
+                }
             }
             else if (canShoot && opponentDistance > distCharge)
             {
                 if (!Player.IsShotCharging)
                     StartShotCharge();
             }
+        }
+
+        Vector2 RandomShootingDirection(Vector2 baseDirection, float maxAngle, float precision)
+        {
+            //Skew deviation towards max value
+            float deviation = Engine.Random.NextFloat();
+            deviation = (float)Math.Pow(deviation, 0.25f);
+
+            float side = Engine.Random.NextSign();
+
+            float angle = maxAngle * deviation * side * (1 - precision);
+            Engine.Log.Debug("OffsetAngle", angle);
+
+            return baseDirection.Rotate(angle);
+        }
+
+        public bool TackleIfInRange()
+        {
+            //Compute tackle max distance based on agressivness
+            float tackleDist = Engine.Debug.EditSingle("TackleDistance", 75);
+            tackleDist = LBE.MathHelper.Lerp(tackleDist * 0.5f, tackleDist, m_aiState.AgressivenessCoef);
+
+            foreach (var player in Player.Opponents)
+            {
+                if (Vector2.Distance(player.Position, Player.Position) < tackleDist)
+                {
+                    Tackle(player.Position - player.Position);
+                    return true;
+                }
+            }
+            return false;
         }
     }
 }
