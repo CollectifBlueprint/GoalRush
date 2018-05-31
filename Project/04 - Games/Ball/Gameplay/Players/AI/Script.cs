@@ -69,8 +69,6 @@ namespace Ball.Gameplay.Players.AI
 
         public override void Update()
         {
-            PlayerAI.TackleIfInRange();
-
             if (PlayerAI.Player.TeamMate.Ball != null)
                 AssistMode();
             else if (PlayerAI.Player.Ball != null)
@@ -81,13 +79,12 @@ namespace Ball.Gameplay.Players.AI
 
         private void AssistMode()
         {
-            //If a player in close to the teamate, tackle it
             foreach (var player in PlayerAI.Player.Opponents)
             {
-                bool tackle = false;
+                //If a ennemy player in close to the teamate, tackle it
                 float assistTackleDistance = Engine.Debug.EditSingle("AssistTackleRange", 180);
-                if (Vector2.Distance(player.Position, PlayerAI.Player.Position) < assistTackleDistance)
-                    tackle = PlayerAI.TackleIfInRange();
+                if (Vector2.Distance(player.Position, PlayerAI.Player.TeamMate.Position) < assistTackleDistance)
+                     PlayerAI.TackleIfInRange();
             }
 
             //Assist the teammate
@@ -126,11 +123,12 @@ namespace Ball.Gameplay.Players.AI
             }
             else if (canTakeBall && ballValue >= teamMateBallValue)
             {
+                PlayerAI.TackleIfInRange();
                 PlayerAI.NavigateToBall();
             }
             else if (defenseValue < teamMateDefenseValue && ballDefensePosition > ballThreshold && defenseValue < defThreshold && teamMateDefenseValue < mateDefThreshold)
             {
-                if (!PlayerAI.Player.TeamMate.Properties.Blink)
+                if (PlayerAI.AiState.TeleportToDefense && !PlayerAI.Player.TeamMate.Properties.Blink)
                     PlayerAI.Blink(Vector2.Zero);
                 else
                     MoveToDefense();
@@ -141,6 +139,7 @@ namespace Ball.Gameplay.Players.AI
             }
             else
             {
+                PlayerAI.TackleIfInRange();
                 PlayerAI.NavigateToAssistPosition();
             }
         }
@@ -170,6 +169,7 @@ namespace Ball.Gameplay.Players.AI
             float passTacticalValue = 0.75f;
             float dangerTacticalValue = 0.40f;
 
+            MoveToShootPosition();
 
             //Set a delay before shooting the ball
             float minTimeBeforeShoot = Engine.Debug.EditSingle("PlayerShootDelay", 1200);
@@ -182,24 +182,19 @@ namespace Ball.Gameplay.Players.AI
                 PlayerAI.ShootIfPossible();
             }
             //If mate can shoot has good tactical value, pass the ball
-            else if (mateCanShoot && mateTacticalValue > passTacticalValue)
+            else if (PlayerAI.AiState.Pass && mateCanShoot && mateTacticalValue > passTacticalValue)
             {
                 AimAndPass(PlayerAI.Player.TeamMate.Position);
             }
             //If personal tactical value is bad, do an emergency pass
-            else if (tacticalValue < dangerTacticalValue && mateTacticalValue > tacticalValue)
+            else if (PlayerAI.AiState.Pass && tacticalValue < dangerTacticalValue && mateTacticalValue > tacticalValue)
             {
                 AimAndPass(PlayerAI.Player.TeamMate.Position);
             }
             //If mate has better tactical value, pass the ball
-            else if (mateTacticalValue > tacticalValue && mateShootValue > shootValue)
+            else if (PlayerAI.AiState.Pass && mateTacticalValue > tacticalValue && mateShootValue > shootValue)
             {
                 AimAndPass(PlayerAI.Player.TeamMate.Position);
-            }
-            else
-            {
-                //Always navigate towards the goal
-                MoveToShootPosition();
             }
         }
 

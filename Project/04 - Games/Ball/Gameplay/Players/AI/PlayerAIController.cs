@@ -27,12 +27,18 @@ namespace Ball.Gameplay.Players.AI
     {
         public float Agressiveness;
         public float Precision;
+        public float TacticalSkills;
     }
 
     public class AIState
     {
         public float AgressivenessCoef;
         public float ShootingPrecision;
+        public float TacticalSkills;
+
+        public bool ShootCharged;
+        public bool TeleportToDefense;
+        public bool Pass;
 
         public float SkillFluctuationPhase;
     }
@@ -62,6 +68,10 @@ namespace Ball.Gameplay.Players.AI
             set { m_gameInfos = value; }
         }
 
+        public AIState AiState {
+            get { return m_aiState; }
+        }
+
         PotentialMapInfluencePoint m_mouseSource;
         Script m_script;
 
@@ -85,8 +95,9 @@ namespace Ball.Gameplay.Players.AI
             Game.GameManager.Navigation.PotentialMaps.Add("AssistMap" + (int)Player.PlayerIndex, m_assistMap);
 
             m_aiParams = new AIParameters();
-            m_aiParams.Agressiveness = Engine.Debug.EditSingle("AIAgressiveness");
-            m_aiParams.Precision = Engine.Debug.EditSingle("AIPrecision");
+            m_aiParams.Agressiveness = Engine.Debug.EditSingle("AIAgressiveness", 0.5f);
+            m_aiParams.Precision = Engine.Debug.EditSingle("AIPrecision", 0.5f);
+            m_aiParams.TacticalSkills = Engine.Debug.EditSingle("AiTactics", 0.5f);
 
             m_aiState = new AIState();
             m_aiState.SkillFluctuationPhase = Engine.Random.NextFloat(0, 1000);
@@ -109,6 +120,8 @@ namespace Ball.Gameplay.Players.AI
 
         public override void Update()
         {
+            UpdateSkillCoeficients();
+
             if (Player.Properties.ControlDisabled)
             {
                 if (Player.IsShotCharging)
@@ -145,28 +158,69 @@ namespace Ball.Gameplay.Players.AI
                 CancelPassCharge();
             }
 
+            if (Game.GameManager.Match.MatchState == MatchState.FirstPeriod || Game.GameManager.Match.MatchState == MatchState.SecondPeriod)
+                m_script.Update();
+        }
+
+        private void UpdateSkillCoeficients()
+        {
             //Update AI coefficients
             m_aiParams.Agressiveness = Engine.Debug.EditSingle("AIAgressiveness", 0.5f);
             m_aiParams.Precision = Engine.Debug.EditSingle("AIPrecision", 0.5f);
+            m_aiParams.TacticalSkills = Engine.Debug.EditSingle("AiTactics", 0.5f);
+
+            //if (Player.Team.TeamID == TeamId.TeamOne)
+            //{
+            //    m_aiParams.Agressiveness = 1.0f;
+            //    m_aiParams.Precision = 1.0f;
+            //    m_aiParams.TacticalSkills = 1.0f;
+            //}
+            //else
+            //{
+            //    m_aiParams.Agressiveness = 0.3f;
+            //    m_aiParams.Precision = 0.3f;
+            //    m_aiParams.TacticalSkills = 0.3f;
+            //}
 
             float period = 12.0f;
-            var agressiveCoefRaw = 0.5f + 0.5f * LBE.MathHelper.Cos(period, Engine.GameTime.TimeMS / 1000, m_aiState.SkillFluctuationPhase);
-            var shootCoefRaw = 0.5f + 0.5f * LBE.MathHelper.Cos(period, Engine.GameTime.TimeMS / 1000, m_aiState.SkillFluctuationPhase);
-            var precisionCoefRaw = 0.5f + 0.5f * LBE.MathHelper.Cos(period * 1.3f, Engine.GameTime.TimeMS / 1000, m_aiState.SkillFluctuationPhase);
+            float agressiveCoefRaw = 0;
+            float precisionCoefRaw = 0;
+            float tacticalCoefRaw = 0;
+            agressiveCoefRaw = UpdateSkillCoeficient(period, m_aiParams.Agressiveness);
+            precisionCoefRaw = UpdateSkillCoeficient(period * 0.87f, m_aiParams.Precision);
+            tacticalCoefRaw = UpdateSkillCoeficient(period * 1.17f, m_aiParams.TacticalSkills);
 
             m_aiState.AgressivenessCoef = LBE.MathHelper.Lerp(m_aiParams.Agressiveness, 1.0f, agressiveCoefRaw * agressiveCoefRaw);
             m_aiState.ShootingPrecision = LBE.MathHelper.Lerp(m_aiParams.Precision, 1.0f, precisionCoefRaw * precisionCoefRaw);
+            m_aiState.TacticalSkills = LBE.MathHelper.Lerp(m_aiParams.Precision, 1.0f, tacticalCoefRaw * tacticalCoefRaw);
+
+            m_aiState.ShootCharged = m_aiState.TacticalSkills > 0.8f;
+            m_aiState.Pass = m_aiState.TacticalSkills > 0.8f;
+            m_aiState.TeleportToDefense = m_aiState.TacticalSkills > 0.8f;
 
             //if (Player.PlayerIndex != PlayerIndex.Two)
             //    return;
-            if (Player.Team.TeamID == TeamId.TeamOne)
-                return;
+            //if (Player.Team.TeamID == TeamId.TeamOne)
+            //    return;
 
-            Engine.Log.Debug("AIAgressiveness", m_aiState.AgressivenessCoef.ToString("0.0"));
-            Engine.Log.Debug("AIPrecision", m_aiState.ShootingPrecision.ToString("0.0"));
+            Engine.Log.Debug("AIAgressiveness", AiState.AgressivenessCoef.ToString("0.0"));
+            Engine.Log.Debug("AIPrecision", AiState.ShootingPrecision.ToString("0.0"));
+            Engine.Log.Debug("AITactical", AiState.TacticalSkills.ToString("0.0"));
+        }
 
-            if (Game.GameManager.Match.MatchState == MatchState.FirstPeriod || Game.GameManager.Match.MatchState == MatchState.SecondPeriod)
-                m_script.Update();
+        private float UpdateSkillCoeficient(float period, float baseSkillCoef)
+        {
+            return baseSkillCoef;
+
+            var loopingTime = (Engine.GameTime.TimeMS / 1000 + AiState.SkillFluctuationPhase) % period;
+
+            float movingCoef = 0;
+            if (loopingTime > period * (1 - baseSkillCoef))
+                movingCoef = 1;
+            else
+                movingCoef = 0;
+
+            return movingCoef;
         }
 
         public override void End()
@@ -300,7 +354,7 @@ namespace Ball.Gameplay.Players.AI
             //Compute distance charge based on agressiveness
             float distChargeMin = 350;
             float distChargeMax = 550;
-            float distCharge = LBE.MathHelper.Lerp(distChargeMax, distChargeMin, m_aiState.AgressivenessCoef);
+            float distCharge = LBE.MathHelper.Lerp(distChargeMax, distChargeMin, AiState.AgressivenessCoef);
 
             float opponentDistance = Math.Min(
                 Vector2.Distance(otherTeam.Players[0].Position, Player.Position),
@@ -317,7 +371,7 @@ namespace Ball.Gameplay.Players.AI
             {
                 if (IsAiming(goalDirection))
                 {
-                    var shootDirection = RandomShootingDirection(goalDirection, maxRandomAngle, m_aiState.ShootingPrecision);
+                    var shootDirection = RandomShootingDirection(goalDirection, maxRandomAngle, AiState.ShootingPrecision);
                     ShootCharged(shootDirection);
                 }
             }
@@ -325,11 +379,11 @@ namespace Ball.Gameplay.Players.AI
             {
                 if (IsAiming(goalDirection))
                 {
-                    var shootDirection = RandomShootingDirection(goalDirection, maxRandomAngle, m_aiState.ShootingPrecision);
+                    var shootDirection = RandomShootingDirection(goalDirection, maxRandomAngle, AiState.ShootingPrecision);
                     Shoot(shootDirection);
                 }
             }
-            else if (canShoot && opponentDistance > distCharge)
+            else if (AiState.ShootCharged && canShoot && opponentDistance > distCharge)
             {
                 if (!Player.IsShotCharging)
                     StartShotCharge();
@@ -354,13 +408,17 @@ namespace Ball.Gameplay.Players.AI
         {
             //Compute tackle max distance based on agressivness
             float tackleDist = Engine.Debug.EditSingle("TackleDistance", 75);
-            tackleDist = LBE.MathHelper.Lerp(tackleDist * 0.5f, tackleDist, m_aiState.AgressivenessCoef);
+            tackleDist = LBE.MathHelper.Lerp(tackleDist * 0.5f, tackleDist, AiState.AgressivenessCoef);
 
             foreach (var player in Player.Opponents)
             {
                 if (Vector2.Distance(player.Position, Player.Position) < tackleDist)
                 {
-                    Tackle(player.Position - player.Position);
+                    float maxRandomAngle = 3.14f * 1.4f;
+
+                    var tackleDirection = player.Position - player.Position;
+                    tackleDirection = RandomShootingDirection(tackleDirection, maxRandomAngle, AiState.TacticalSkills);
+                    Tackle(tackleDirection);
                     return true;
                 }
             }
