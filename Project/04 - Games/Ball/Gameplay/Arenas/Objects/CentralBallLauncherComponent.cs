@@ -238,6 +238,9 @@ namespace Ball.Gameplay.Arenas.Objects
         {
             base.End();
             StopCharge();
+
+            m_triangleMesh.Dispose();
+            m_lineMesh.Dispose();
         }
 
         public override GameObjectComponent Clone()

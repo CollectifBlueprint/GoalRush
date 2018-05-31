@@ -250,6 +250,15 @@
   <PropertyGroup>
     <PostBuildEvent>call "$(SolutionDir)..\Tools\makewindowsbuild.bat" "$(SolutionDir)" "$(TargetDir)"</PostBuildEvent>
   </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
+    <StartWorkingDirectory>..\..\..\..</StartWorkingDirectory>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|AnyCPU'">
+    <StartWorkingDirectory>..\..\..\..</StartWorkingDirectory>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Shipping|AnyCPU'">
+    <StartWorkingDirectory>..\..\..\..</StartWorkingDirectory>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
