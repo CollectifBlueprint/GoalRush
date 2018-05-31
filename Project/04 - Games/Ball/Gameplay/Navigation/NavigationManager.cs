@@ -245,15 +245,17 @@ namespace Ball.Gameplay.Navigation
 
                     cell.CanNavigateToNeighbour[iNeighbour] = RayCastVisibility(cell.Position, nextCell.Position);
                 }
+                //Shooting parameters
+                float maxShootDistancePenalty = Engine.Debug.EditSingle("MaxShootDistancePenalty", 0.5f);
+                float minShootDistance = Engine.Debug.EditSingle("MinShootDistance", 200.0f);
+                float maxShootDistance = Engine.Debug.EditSingle("MaxShootDistance", 600.0f);
+                float bestShootDistance = Engine.Debug.EditSingle("BestShootDistance", 450.0f);
 
                 //Raycast to left goal
                 cell.CanShootLeft = RayCastVisibility(cell.Position, Game.Arena.LeftGoal.Position);
                 cell.CanShootLeftValue = 0.0f;                
                 if (cell.CanShootLeft)
                 {
-                    float maxShootDistancePenalty = Engine.Debug.EditSingle("MaxShootDistancePenalty", 0.8f);
-                    float minShootDistance = Engine.Debug.EditSingle("MinShootDistance", 40.0f);
-                    float maxShootDistance = Engine.Debug.EditSingle("MaxShootDistance", 600.0f);
 
                     bool intercept1 = TestInterception(Game.GameManager.Teams[0], cell.Position, Game.Arena.LeftGoal.Position);
                     bool intercept2 = TestInterception(Game.GameManager.Teams[1], cell.Position, Game.Arena.LeftGoal.Position);
@@ -261,9 +263,12 @@ namespace Ball.Gameplay.Navigation
                     if (intercept1 && intercept2)
                     {
                         float distToGoal = Vector2.Distance(Game.Arena.LeftGoal.Position, cell.Position);
-                        float distCoef = LBE.MathHelper.LinearStep(minShootDistance, maxShootDistance, distToGoal);
-                        distCoef = (float)Math.Pow(distCoef, 0.5f);
-                        float shootValue = LBE.MathHelper.Lerp(1 - maxShootDistancePenalty, 1.0f, 1 - distCoef);
+                        var distCoef = 0.0f;
+                        if (distToGoal < bestShootDistance)
+                            distCoef = LBE.MathHelper.LinearStep(minShootDistance, bestShootDistance, distToGoal);
+                        else
+                            distCoef = 1 - LBE.MathHelper.LinearStep(bestShootDistance, maxShootDistance, distToGoal);
+                        float shootValue = LBE.MathHelper.Lerp(maxShootDistancePenalty, 1.0f, distCoef);
 
                         cell.CanShootLeftValue = shootValue;
                     }
@@ -274,19 +279,18 @@ namespace Ball.Gameplay.Navigation
                 cell.CanShootRightValue = 0.0f;
                 if (cell.CanShootRight)
                 {
-                    float maxShootDistancePenalty = Engine.Debug.EditSingle("MaxShootDistancePenalty", 0.8f);
-                    float minShootDistance = Engine.Debug.EditSingle("MinShootDistance", 40.0f);
-                    float maxShootDistance = Engine.Debug.EditSingle("MaxShootDistance", 600.0f);
-
                     bool intercept1 = TestInterception(Game.GameManager.Teams[0], cell.Position, Game.Arena.RightGoal.Position);
                     bool intercept2 = TestInterception(Game.GameManager.Teams[1], cell.Position, Game.Arena.RightGoal.Position);
 
                     if (intercept1 && intercept2)
                     {
                         float distToGoal = Vector2.Distance(Game.Arena.RightGoal.Position, cell.Position);
-                        float distCoef = LBE.MathHelper.LinearStep(minShootDistance, maxShootDistance, distToGoal);
-                        distCoef = (float)Math.Pow(distCoef, 0.5f);
-                        float shootValue = LBE.MathHelper.Lerp(1 - maxShootDistancePenalty, 1.0f, 1 - distCoef);
+                        var distCoef = 0.0f;
+                        if (distToGoal < bestShootDistance)
+                            distCoef = LBE.MathHelper.LinearStep(minShootDistance, bestShootDistance, distToGoal);
+                        else
+                            distCoef = 1 - LBE.MathHelper.LinearStep(bestShootDistance, maxShootDistance, distToGoal);
+                        float shootValue = LBE.MathHelper.Lerp(maxShootDistancePenalty, 1.0f, distCoef);
 
                         cell.CanShootRightValue = shootValue;
                     }

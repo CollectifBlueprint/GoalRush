@@ -52,9 +52,9 @@ namespace Ball.Gameplay.Players.AI
 
         KeyControl m_mouseCtrl;
 
-        PotentialMap m_mouseMap;
+        PotentialMap m_initialPositionMap;
         public PotentialMap MouseMap {
-            get { return m_mouseMap; }
+            get { return m_initialPositionMap; }
         }
 
         PotentialMap m_assistMap;
@@ -72,7 +72,7 @@ namespace Ball.Gameplay.Players.AI
             get { return m_aiState; }
         }
 
-        PotentialMapInfluencePoint m_mouseSource;
+        PotentialMapInfluencePoint m_initialPositionMapSource;
         Script m_script;
 
         AIParameters m_aiParams;
@@ -82,12 +82,18 @@ namespace Ball.Gameplay.Players.AI
         {
             m_mouseCtrl = new KeyControl(MouseButtons.Left);
 
-            m_mouseMap = new PotentialMap(Game.GameManager.Navigation, PotentialMapType.Linear);
-            m_mouseSource = new PotentialMapInfluencePoint();
-            m_mouseSource.Radius = 60;
-            m_mouseSource.Value = 1;
-            m_mouseMap.Sources.Add(m_mouseSource);
-            Game.GameManager.Navigation.PotentialMaps.Add("MouseMap" + (int)Player.PlayerIndex, m_mouseMap);
+            m_initialPositionMap = new PotentialMap(Game.GameManager.Navigation, PotentialMapType.Linear);
+            m_initialPositionMapSource = new PotentialMapInfluencePoint();
+            m_initialPositionMapSource.Radius = 80;
+            m_initialPositionMapSource.Value = 1;
+            m_initialPositionMapSource.Position = Player.InitialPosition;
+            m_initialPositionMap.Sources.Add(m_initialPositionMapSource);
+            var launcherObstacle = new PotentialMapInfluencePoint();
+            launcherObstacle.Radius = 60;
+            launcherObstacle.Value = 5.0f;
+            launcherObstacle.Position = Vector2.Zero;
+            m_initialPositionMap.Costs.Add(launcherObstacle);
+            Game.GameManager.Navigation.PotentialMaps.Add("IntialPositionMap" + (int)Player.PlayerIndex, m_initialPositionMap);
 
             m_assistMap = new PotentialMap(Game.GameManager.Navigation, PotentialMapType.Linear);
             m_assistMap.Sources.Add(new AssistPlayerPotentialSource() { Assistee = Player.TeamMate, Assistant = Player });
@@ -135,19 +141,14 @@ namespace Ball.Gameplay.Players.AI
                 return;
             }
 
-            m_mouseMap.UpdateFrequency = PotentialMapUpdateFrequency.None;
+            m_initialPositionMapSource.Position = Player.InitialPosition;
+            m_initialPositionMap.UpdateFrequency = PotentialMapUpdateFrequency.Slow;
             m_assistMap.UpdateFrequency = PotentialMapUpdateFrequency.Slow;
             if (Player.TeamMate.Ball != null)
                 m_assistMap.UpdateFrequency = PotentialMapUpdateFrequency.Fast;
 
             if (Engine.Debug.Flags.EnableAI == false)
                 return;
-
-            if (m_mouseCtrl.KeyPressed())
-            {
-                Point mousePos = new Point(Engine.Input.MouseState().X, Engine.Input.MouseState().Y);
-                m_mouseSource.Position = Engine.Renderer.Cameras[(int)CameraId.Game].ScreenToWorld(mousePos);
-            }
 
             Move(Vector2.Zero);
             Aim(Vector2.Zero);
@@ -159,7 +160,7 @@ namespace Ball.Gameplay.Players.AI
             }
 
             if (Game.GameManager.Match.MatchState == MatchState.FirstPeriod || Game.GameManager.Match.MatchState == MatchState.SecondPeriod)
-                m_script.Update();
+               m_script.Update();
         }
 
         private void UpdateSkillCoeficients()
@@ -315,10 +316,13 @@ namespace Ball.Gameplay.Players.AI
             }
         }
 
-        public void NavigateTo(Vector2 position)
+        public void NavigateToInitialPosition()
         {
-            m_mouseSource.Position = position;
-            NavigateToBestValue(m_mouseMap);
+            var distToPos = Vector2.Distance(Player.Position, m_initialPositionMapSource.Position);
+            if (distToPos > 60)
+                NavigateToBestValue(m_initialPositionMap);
+            else
+                AimAtPosition(m_initialPositionMapSource.Position);
         }
 
         public void NavigateToAssistPosition()
@@ -366,6 +370,7 @@ namespace Ball.Gameplay.Players.AI
             float maxRandomAngle = 3.14f * 0.3f;
 
             Aim(goalDirection);
+            Move(goalDirection);
 
             if (canShoot && Player.IsShotCharging && Player.IsShotCharged)
             {

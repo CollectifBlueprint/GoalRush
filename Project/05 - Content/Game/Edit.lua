@@ -14,10 +14,11 @@ Edit = {
 	InterceptConeAngle = 0.45,
 	InterceptDistanceStep = 25,
 
-	MinShootDistance = 350,
+	MinShootDistance = 120,
 	MaxShootDistance = 1000,
+	BestShootDistance = 200,
 
-	PlayerCostRadius = 120;
+	PlayerCostRadius = 120,
 	PlayerValue = 8,
 	
     MapDecay = 0.1,
@@ -30,7 +31,7 @@ Edit = {
 
 	MinDelayAI = 0,
 
-	PlayerShootDelay = 600,
+	PlayerShootDelay = 120,
 	TackleDistance = 100,
 
 	TestArenaBallImpulse = 50,

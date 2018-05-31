@@ -14,8 +14,7 @@ namespace Ball.Gameplay
     public class PlayerController : GameObjectComponent
     {
         Player m_player;
-        public Player Player
-        {
+        public Player Player {
             get { return m_player; }
         }
 
@@ -77,7 +76,7 @@ namespace Ball.Gameplay
         {
             m_player.Pass(Player.TeamMate, direction);
             m_player.StopChargingPass();
-            return;           
+            return;
         }
 
         public void StartShotCharge()
@@ -87,7 +86,7 @@ namespace Ball.Gameplay
 
         public void CancelShotCharge()
         {
-            if(m_player.IsShotCharging)
+            if (m_player.IsShotCharging)
                 m_player.StopChargingShot();
         }
 
@@ -130,5 +129,5 @@ namespace Ball.Gameplay
         {
             m_player.StartBlink(direction);
         }
-    }   
+    }
 }
