@@ -49,23 +49,31 @@ namespace LBE.Graphics
             if (lastEffectWriteTime > lastMgfxWriteTime)
             {
                 String execPath = Path.GetFullPath(@"01 - MonoGame\Tools\2MGFX\bin\Windows\AnyCPU\Release\2MGFX.exe");
-                ProcessStartInfo startInfos = new ProcessStartInfo();
-                startInfos.FileName = Path.GetFullPath(execPath);
-                startInfos.Arguments =
-                    "\"" + Path.GetFullPath(effectFilePath) + "\"" +
-                    " " +
-                    "\"" + Path.GetFullPath(mgfxFilePath) + "\"" +
-                    " /DEBUG";
-                startInfos.RedirectStandardOutput = true;
-                startInfos.RedirectStandardError = true;
-                startInfos.UseShellExecute = false;
+                String error = "";
 
-                var process = System.Diagnostics.Process.Start(startInfos);
-                process.WaitForExit();
+                if (!File.Exists(execPath))
+                {
+                    error = "2MGFX.exe does not exist. If you're running the project from a non-windows platform it may not be available. If so please run the project from a windows platform first";
+                }
+                else
+                {
+                    ProcessStartInfo startInfos = new ProcessStartInfo();
+                    startInfos.FileName = Path.GetFullPath(execPath);
+                    startInfos.Arguments =
+                        "\"" + Path.GetFullPath(effectFilePath) + "\"" +
+                        " " +
+                        "\"" + Path.GetFullPath(mgfxFilePath) + "\"" +
+                        " /DEBUG";
+                    startInfos.RedirectStandardOutput = true;
+                    startInfos.RedirectStandardError = true;
+                    startInfos.UseShellExecute = false;
 
-                String output = process.StandardOutput.ReadToEnd();
-                String error = process.StandardError.ReadToEnd();
+                    var process = System.Diagnostics.Process.Start(startInfos);
+                    process.WaitForExit();
 
+                    String output = process.StandardOutput.ReadToEnd();
+                    error = process.StandardError.ReadToEnd();
+                }
                 if (error.Length > 0)
                 {
                     throw new Exception(error);
