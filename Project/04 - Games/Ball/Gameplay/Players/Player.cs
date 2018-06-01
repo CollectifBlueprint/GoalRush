@@ -1036,14 +1036,6 @@ namespace Ball.Gameplay
 
             if (rayTest == false)
             {
-                Engine.Log.Write("Ayayaya");
-                Engine.Debug.Do(5000, (GameObject obj) => {
-                    Engine.Debug.Screen.ResetBrush();
-                    Engine.Debug.Screen.AddCross(ballPosOld, 6);
-                    Engine.Debug.Screen.AddCross(ballPosNew, 6);
-                    Engine.Debug.Screen.AddLine(ballPosOld, ballPosNew);
-                });
-
                 Owner.Position = Position - (ballPosNew - ballPosOld);
             }
         }
