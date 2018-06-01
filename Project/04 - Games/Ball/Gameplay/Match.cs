@@ -184,7 +184,7 @@ namespace Ball.Gameplay
             m_timerMSPrevious = m_timerMS;
             m_elapsedTimeMSPrevious = m_elapsedTime;
 
-            if (Game.StunfestData.IsIdleAIRunning == false || m_matchState != MatchState.FirstPeriod)
+            if (Game.AIGameData.IsIdleAIRunning == false || m_matchState != MatchState.FirstPeriod)
             {
                 m_timerMS -= Engine.GameTime.ElapsedMS;
                 m_elapsedTime += Engine.GameTime.ElapsedMS;

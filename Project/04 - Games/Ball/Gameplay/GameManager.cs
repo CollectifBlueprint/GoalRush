@@ -160,8 +160,31 @@ namespace Ball.Gameplay
 			Game.GameMusic.PlayMatchMusic();
         }
 
+        public bool IsAIGame()
+        {
+            bool AIGame = true;
+            foreach (var player in m_players)
+            {
+                if (player.PlayerInfo.InputType != InputType.AI)
+                {
+                    AIGame = false;
+                    break;
+                }
+            }
+            return AIGame;
+        }
+
         public void EndMatch()
         {
+
+            if (!IsAIGame())
+            {
+                Game.GameProfile.Stats.GamePlayed++;
+                Game.GameProfile.Stats.GameTimeMinutes += m_match.Time() / (60 * 1000.0f);
+                Game.GameProfile.CommitChanges();
+            }
+
+
             foreach (var obj in Engine.World.GameObjects)
             {
                 if (obj.Tag == "Gameplay")
@@ -171,14 +194,13 @@ namespace Ball.Gameplay
 
             m_arena = null;
 
-            Game.GameProfile.Stats.GamePlayed++;
-            Game.GameProfile.Stats.GameTimeMinutes += m_match.Time() / (60 * 1000.0f);
-            Game.GameProfile.CommitChanges();
-
+          
             if (m_paused)
                 UnpauseMatch();
 
             Engine.World.EventManager.RemoveAllListeners();
+
+            //m_matchFeedBack.EndAllFeedback
         }
 
         public void PauseMatch()
