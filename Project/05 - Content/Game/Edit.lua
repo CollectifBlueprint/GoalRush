@@ -14,9 +14,9 @@ Edit = {
 	InterceptConeAngle = 0.45,
 	InterceptDistanceStep = 25,
 
-	MinShootDistance = 120,
-	MaxShootDistance = 1000,
-	BestShootDistance = 200,
+	MinShootDistance = 90,
+	MaxShootDistance = 600,
+	BestShootDistance = 160,
 
 	PlayerCostRadius = 120,
 	PlayerValue = 8,
@@ -26,13 +26,6 @@ Edit = {
 	MapInfluenceDecay = 0.02,
 
 	LinearDecay = 0.005,
-
-	AssistAvoidDist = 200,
-
-	MinDelayAI = 0,
-
-	PlayerShootDelay = 120,
-	TackleDistance = 100,
 
 	TestArenaBallImpulse = 50,
 
@@ -81,4 +74,16 @@ Edit = {
 
 	AIAgressiveness = 0.2,
 	AIPrecision = 0.2,
+
+	AssistAvoidDist = 200,
+
+	MinDelayAI = 0,
+
+	AIShootDelayMin = 120,
+	AIShootDelayDistanceBase = 600,
+	AIShootDelayDistanceCoefMax = 5,
+	AIShootDelaySkillBase = 400,
+	AIShootDelaySkillCoefMin = 0.2,
+
+	TackleDistance = 100,
 }
