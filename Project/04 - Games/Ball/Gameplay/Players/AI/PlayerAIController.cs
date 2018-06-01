@@ -52,9 +52,9 @@ namespace Ball.Gameplay.Players.AI
 
         KeyControl m_mouseCtrl;
 
-        PotentialMap m_mouseMap;
+        PotentialMap m_initialPositionMap;
         public PotentialMap MouseMap {
-            get { return m_mouseMap; }
+            get { return m_initialPositionMap; }
         }
 
         PotentialMap m_assistMap;
@@ -72,7 +72,7 @@ namespace Ball.Gameplay.Players.AI
             get { return m_aiState; }
         }
 
-        PotentialMapInfluencePoint m_mouseSource;
+        PotentialMapInfluencePoint m_initialPositionMapSource;
         Script m_script;
 
         AIParameters m_aiParams;
@@ -82,12 +82,18 @@ namespace Ball.Gameplay.Players.AI
         {
             m_mouseCtrl = new KeyControl(MouseButtons.Left);
 
-            m_mouseMap = new PotentialMap(Game.GameManager.Navigation, PotentialMapType.Linear);
-            m_mouseSource = new PotentialMapInfluencePoint();
-            m_mouseSource.Radius = 60;
-            m_mouseSource.Value = 1;
-            m_mouseMap.Sources.Add(m_mouseSource);
-            Game.GameManager.Navigation.PotentialMaps.Add("MouseMap" + (int)Player.PlayerIndex, m_mouseMap);
+            m_initialPositionMap = new PotentialMap(Game.GameManager.Navigation, PotentialMapType.Linear);
+            m_initialPositionMapSource = new PotentialMapInfluencePoint();
+            m_initialPositionMapSource.Radius = 80;
+            m_initialPositionMapSource.Value = 1;
+            m_initialPositionMapSource.Position = Player.InitialPosition;
+            m_initialPositionMap.Sources.Add(m_initialPositionMapSource);
+            var launcherObstacle = new PotentialMapInfluencePoint();
+            launcherObstacle.Radius = 60;
+            launcherObstacle.Value = 5.0f;
+            launcherObstacle.Position = Vector2.Zero;
+            m_initialPositionMap.Costs.Add(launcherObstacle);
+            Game.GameManager.Navigation.PotentialMaps.Add("IntialPositionMap" + (int)Player.PlayerIndex, m_initialPositionMap);
 
             m_assistMap = new PotentialMap(Game.GameManager.Navigation, PotentialMapType.Linear);
             m_assistMap.Sources.Add(new AssistPlayerPotentialSource() { Assistee = Player.TeamMate, Assistant = Player });
@@ -135,19 +141,14 @@ namespace Ball.Gameplay.Players.AI
                 return;
             }
 
-            m_mouseMap.UpdateFrequency = PotentialMapUpdateFrequency.None;
+            m_initialPositionMapSource.Position = Player.InitialPosition;
+            m_initialPositionMap.UpdateFrequency = PotentialMapUpdateFrequency.Slow;
             m_assistMap.UpdateFrequency = PotentialMapUpdateFrequency.Slow;
             if (Player.TeamMate.Ball != null)
                 m_assistMap.UpdateFrequency = PotentialMapUpdateFrequency.Fast;
 
             if (Engine.Debug.Flags.EnableAI == false)
                 return;
-
-            if (m_mouseCtrl.KeyPressed())
-            {
-                Point mousePos = new Point(Engine.Input.MouseState().X, Engine.Input.MouseState().Y);
-                m_mouseSource.Position = Engine.Renderer.Cameras[(int)CameraId.Game].ScreenToWorld(mousePos);
-            }
 
             Move(Vector2.Zero);
             Aim(Vector2.Zero);
@@ -159,7 +160,7 @@ namespace Ball.Gameplay.Players.AI
             }
 
             if (Game.GameManager.Match.MatchState == MatchState.FirstPeriod || Game.GameManager.Match.MatchState == MatchState.SecondPeriod)
-                m_script.Update();
+               m_script.Update();
         }
 
         private void UpdateSkillCoeficients()
@@ -168,6 +169,10 @@ namespace Ball.Gameplay.Players.AI
             m_aiParams.Agressiveness = Engine.Debug.EditSingle("AIAgressiveness", 0.5f);
             m_aiParams.Precision = Engine.Debug.EditSingle("AIPrecision", 0.5f);
             m_aiParams.TacticalSkills = Engine.Debug.EditSingle("AiTactics", 0.5f);
+
+            m_aiParams.Agressiveness = 1.0f;
+            m_aiParams.Precision = 1.0f;
+            m_aiParams.TacticalSkills = 1.0f;
 
             //if (Player.Team.TeamID == TeamId.TeamOne)
             //{
@@ -315,10 +320,13 @@ namespace Ball.Gameplay.Players.AI
             }
         }
 
-        public void NavigateTo(Vector2 position)
+        public void NavigateToInitialPosition()
         {
-            m_mouseSource.Position = position;
-            NavigateToBestValue(m_mouseMap);
+            float stoppingPos = 40;
+            float distSq = Vector2.DistanceSquared(Player.Position, m_initialPositionMapSource.Position);
+            if (distSq < stoppingPos * stoppingPos)
+                AimAtPosition(Vector2.Zero);
+            NavigateWithMapAndRaycast(m_initialPositionMap, m_initialPositionMapSource.Position);
         }
 
         public void NavigateToAssistPosition()
@@ -328,18 +336,24 @@ namespace Ball.Gameplay.Players.AI
 
         public void NavigateToBall()
         {
+            var ballMap = Game.GameManager.Navigation.PotentialMaps["BallMap"];
+            var position = Game.GameManager.Ball.Position;
+            NavigateWithMapAndRaycast(ballMap, position);
+        }
+
+        public void NavigateWithMapAndRaycast(PotentialMap map, Vector2 position)
+        {
             float rayCastDist = 250;
-            float distSq = Vector2.DistanceSquared(Player.Position, Game.GameManager.Ball.Position);
-            if (distSq < rayCastDist * rayCastDist && NavigationManager.RayCastVisibility(Player.Position, Game.GameManager.Ball.Position))
+            float distSq = Vector2.DistanceSquared(Player.Position, position);
+            if (distSq < rayCastDist * rayCastDist && NavigationManager.RayCastVisibility(Player.Position, position))
             {
                 Engine.Debug.Screen.ResetBrush(); Engine.Debug.Screen.Brush.DrawSurface = false;
-                Engine.Debug.Screen.AddLine(Player.Position, Game.GameManager.Ball.Position);
-                MoveToPosition(Game.GameManager.Ball.Position);
+                Engine.Debug.Screen.AddLine(Player.Position, position);
+                MoveToPosition(position);
             }
             else
             {
-                var ballMap = Game.GameManager.Navigation.PotentialMaps["BallMap"];
-                NavigateToBestValue(ballMap);
+                NavigateToBestValue(map);
             }
         }
 
@@ -366,6 +380,7 @@ namespace Ball.Gameplay.Players.AI
             float maxRandomAngle = 3.14f * 0.3f;
 
             Aim(goalDirection);
+            Move(goalDirection);
 
             if (canShoot && Player.IsShotCharging && Player.IsShotCharged)
             {

@@ -42,7 +42,7 @@ namespace Ball.Gameplay.Players.AI
             {
                 var target = Game.GameManager.Players[0];
                 var dir = target.Position - PlayerAI.Position;
-
+                
                 PlayerAI.AimAtPosition(target.Position);
 
                 if (!PlayerAI.Player.IsShotCharging)
@@ -79,11 +79,11 @@ namespace Ball.Gameplay.Players.AI
 
         private void AssistMode()
         {
-            foreach (var player in PlayerAI.Player.Opponents)
+            foreach (var opponents in PlayerAI.Player.Opponents)
             {
                 //If a ennemy player in close to the teamate, tackle it
                 float assistTackleDistance = Engine.Debug.EditSingle("AssistTackleRange", 180);
-                if (Vector2.Distance(player.Position, PlayerAI.Player.TeamMate.Position) < assistTackleDistance)
+                if (Vector2.Distance(opponents.Position, PlayerAI.Player.TeamMate.Position) < assistTackleDistance)
                      PlayerAI.TackleIfInRange();
             }
 
@@ -119,7 +119,8 @@ namespace Ball.Gameplay.Players.AI
 
             if ((PlayerAI.Info.BallInGoal || Game.Arena.SelectedLauncher != null) && (PlayerAI.Info.GoalTeam != null && PlayerAI.Player.Team != PlayerAI.Info.GoalTeam))
             {
-                MoveToDefense();
+                MoveToInitialPosition();
+                //MoveToDefense();
             }
             else if (canTakeBall && ballValue >= teamMateBallValue)
             {
@@ -135,6 +136,7 @@ namespace Ball.Gameplay.Players.AI
             }
             else if (!PlayerAI.Player.BallTrigger.Enabled)
             {
+                //MoveToInitialPosition();
                 MoveToDefense();
             }
             else
@@ -211,7 +213,7 @@ namespace Ball.Gameplay.Players.AI
 
         private void MoveToInitialPosition()
         {
-            PlayerAI.MoveToPosition(PlayerAI.Player.InitialPosition);
+            PlayerAI.NavigateToInitialPosition();
         }
 
         public void MoveToShootPosition()
