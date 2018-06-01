@@ -79,11 +79,11 @@ namespace Ball.Gameplay.Players.AI
 
         private void AssistMode()
         {
-            foreach (var player in PlayerAI.Player.Opponents)
+            foreach (var opponents in PlayerAI.Player.Opponents)
             {
                 //If a ennemy player in close to the teamate, tackle it
                 float assistTackleDistance = Engine.Debug.EditSingle("AssistTackleRange", 180);
-                if (Vector2.Distance(player.Position, PlayerAI.Player.TeamMate.Position) < assistTackleDistance)
+                if (Vector2.Distance(opponents.Position, PlayerAI.Player.TeamMate.Position) < assistTackleDistance)
                      PlayerAI.TackleIfInRange();
             }
 

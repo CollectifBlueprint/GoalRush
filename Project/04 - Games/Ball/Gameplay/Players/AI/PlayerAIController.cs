@@ -170,6 +170,10 @@ namespace Ball.Gameplay.Players.AI
             m_aiParams.Precision = Engine.Debug.EditSingle("AIPrecision", 0.5f);
             m_aiParams.TacticalSkills = Engine.Debug.EditSingle("AiTactics", 0.5f);
 
+            m_aiParams.Agressiveness = 1.0f;
+            m_aiParams.Precision = 1.0f;
+            m_aiParams.TacticalSkills = 1.0f;
+
             //if (Player.Team.TeamID == TeamId.TeamOne)
             //{
             //    m_aiParams.Agressiveness = 1.0f;
@@ -318,11 +322,11 @@ namespace Ball.Gameplay.Players.AI
 
         public void NavigateToInitialPosition()
         {
-            var distToPos = Vector2.Distance(Player.Position, m_initialPositionMapSource.Position);
-            if (distToPos > 60)
-                NavigateToBestValue(m_initialPositionMap);
-            else
-                AimAtPosition(m_initialPositionMapSource.Position);
+            float stoppingPos = 40;
+            float distSq = Vector2.DistanceSquared(Player.Position, m_initialPositionMapSource.Position);
+            if (distSq < stoppingPos * stoppingPos)
+                AimAtPosition(Vector2.Zero);
+            NavigateWithMapAndRaycast(m_initialPositionMap, m_initialPositionMapSource.Position);
         }
 
         public void NavigateToAssistPosition()
@@ -332,18 +336,24 @@ namespace Ball.Gameplay.Players.AI
 
         public void NavigateToBall()
         {
+            var ballMap = Game.GameManager.Navigation.PotentialMaps["BallMap"];
+            var position = Game.GameManager.Ball.Position;
+            NavigateWithMapAndRaycast(ballMap, position);
+        }
+
+        public void NavigateWithMapAndRaycast(PotentialMap map, Vector2 position)
+        {
             float rayCastDist = 250;
-            float distSq = Vector2.DistanceSquared(Player.Position, Game.GameManager.Ball.Position);
-            if (distSq < rayCastDist * rayCastDist && NavigationManager.RayCastVisibility(Player.Position, Game.GameManager.Ball.Position))
+            float distSq = Vector2.DistanceSquared(Player.Position, position);
+            if (distSq < rayCastDist * rayCastDist && NavigationManager.RayCastVisibility(Player.Position, position))
             {
                 Engine.Debug.Screen.ResetBrush(); Engine.Debug.Screen.Brush.DrawSurface = false;
-                Engine.Debug.Screen.AddLine(Player.Position, Game.GameManager.Ball.Position);
-                MoveToPosition(Game.GameManager.Ball.Position);
+                Engine.Debug.Screen.AddLine(Player.Position, position);
+                MoveToPosition(position);
             }
             else
             {
-                var ballMap = Game.GameManager.Navigation.PotentialMaps["BallMap"];
-                NavigateToBestValue(ballMap);
+                NavigateToBestValue(map);
             }
         }
 
