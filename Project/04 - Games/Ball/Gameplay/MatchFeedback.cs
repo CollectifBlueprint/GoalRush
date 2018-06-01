@@ -21,6 +21,7 @@ namespace Ball.Gameplay
         TextFxParameters[] m_textFxParameters;
 
         Timer m_timerScoreTextMS;
+        TimerEvent m_timerScoreTextEvent;
 
         TextComponent m_timeText;
         TextFx m_timeTextFx;
@@ -35,6 +36,7 @@ namespace Ball.Gameplay
         SpriteFx m_cupSpriteFx;
 
         Timer m_timerCupSpriteMS;
+        TimerEvent m_timerCupSpriteEvent;
 
 
         ColorMaskedSprite[] m_playerOffScreenMarkerSprites;
@@ -74,10 +76,12 @@ namespace Ball.Gameplay
 			Engine.World.EventManager.AddListener((int)EventId.Victory, OnVictory);
 
             m_timerScoreTextMS = new Timer(Engine.GameTime.Source, 0);
-            m_timerScoreTextMS.OnTime += new TimerEvent(m_timerScoreTextMS_OnTime);
+            m_timerScoreTextEvent = new TimerEvent(m_timerScoreTextMS_OnTime);
+            m_timerScoreTextMS.OnTime += m_timerScoreTextEvent;
 
             m_timerCupSpriteMS = new Timer(Engine.GameTime.Source, 0);
-            m_timerCupSpriteMS.OnTime += new TimerEvent(m_timerCupSpriteMS_OnTime);
+            m_timerCupSpriteEvent = new TimerEvent(m_timerCupSpriteMS_OnTime);
+            m_timerCupSpriteMS.OnTime += m_timerCupSpriteEvent;
 
             m_playerOffScreenMarkerSprites = new ColorMaskedSprite[4];
             for (int i = 0; i < m_playerOffScreenMarkerSprites.Length; i++)
@@ -591,6 +595,16 @@ namespace Ball.Gameplay
             //        Game.Arena.CupSpriteRightCmp.Sprite.Playing = true;
             //    }
             //}
+        }
+
+        public override void End()
+        {
+            base.End();
+            m_timerScoreTextMS.Stop();
+            m_timerScoreTextMS.OnTime -= m_timerScoreTextEvent;
+
+            m_timerCupSpriteMS.Stop();
+            m_timerCupSpriteMS.OnTime -= m_timerCupSpriteEvent;
         }
     }
 }

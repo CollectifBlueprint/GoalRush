@@ -51,7 +51,7 @@ namespace Ball
         public bool EnableAI = true;
     }
 
-    public class StunfestData
+    public class AIGameData
     {
         public float IdleTimeMS = 0;
         public bool IsIdleAIRunning = false;
@@ -117,9 +117,9 @@ namespace Ball
             get { return m_instance.m_gameMusic; }
         }
 
-        StunfestData m_stunfestData = new StunfestData();
-        public static StunfestData StunfestData {
-            get { return m_instance.m_stunfestData; }
+        AIGameData m_AIGameData = new AIGameData();
+        public static AIGameData AIGameData {
+            get { return m_instance.m_AIGameData; }
         }
 
         ScreenShake m_screenShake;
@@ -233,7 +233,7 @@ namespace Ball
             if (!m_startInfo.Release && m_resetCtrl.KeyPressed())
                 Reset();
 
-            m_stunfestData.IdleTimeMS += Engine.GameTime.ElapsedMS;
+            m_AIGameData.IdleTimeMS += Engine.GameTime.ElapsedMS;
 
             for (int i = 0; i < 4; i++)
             {
@@ -252,7 +252,7 @@ namespace Ball
             var iaCtrl = new KeyControl(Keys.End);
             if (iaCtrl.KeyPressed())
             {
-                if (m_stunfestData.IsIdleAIRunning == false)
+                if (m_AIGameData.IsIdleAIRunning == false)
                 {
                     StartAIDemo();
                 }
@@ -263,7 +263,7 @@ namespace Ball
             }
 
             float timeDemoS = 60;
-            if (m_stunfestData.IdleTimeMS > timeDemoS * 1000 && m_stunfestData.IsIdleAIRunning == false)
+            if (m_AIGameData.IdleTimeMS > timeDemoS * 1000 && m_AIGameData.IsIdleAIRunning == false)
             {
                 if (Game.MenuManager.CurrentMenu != null && Game.MenuManager.CurrentMenu.Script.GetType() == typeof(AltMainMenuScript))
                     StartAIDemo();
@@ -274,11 +274,11 @@ namespace Ball
 
         private void StartAIDemo()
         {
-            if (m_stunfestData.IsIdleAIRunning)
+            if (m_AIGameData.IsIdleAIRunning)
                 return;
 
-            m_stunfestData.IsIdleAIRunning = true;
-            m_stunfestData.IdleTimeMS = 0;
+            m_AIGameData.IsIdleAIRunning = true;
+            m_AIGameData.IdleTimeMS = 0;
 
             Engine.Log.Write("StartAIDemo");
 
@@ -302,16 +302,16 @@ namespace Ball
 
         private void QuitAIDemo()
         {
-            m_stunfestData.IsIdleAIRunning = false;
-            m_stunfestData.IdleTimeMS = 0;
+            m_AIGameData.IsIdleAIRunning = false;
+            m_AIGameData.IdleTimeMS = 0;
 
             Reset();
         }
 
         private void ResetAiTimerOrQuit()
         {
-            m_stunfestData.IdleTimeMS = 0;
-            if (m_stunfestData.IsIdleAIRunning)
+            m_AIGameData.IdleTimeMS = 0;
+            if (m_AIGameData.IsIdleAIRunning)
                 QuitAIDemo();
         }
 
@@ -335,8 +335,8 @@ namespace Ball
             var menuDef = Engine.AssetManager.Get<Menus.MenuDefinition>("Interface/MainMenu.lua::Menu");
             Game.MenuManager.StartMenu(menuDef);
 
-            m_stunfestData.IdleTimeMS = 0;
-            m_stunfestData.IsIdleAIRunning = false;
+            m_AIGameData.IdleTimeMS = 0;
+            m_AIGameData.IsIdleAIRunning = false;
         }
     }
 }
