@@ -19,8 +19,11 @@ namespace Content.Arenas
         int m_side;
 
         Timer m_laserTimer;
+        TimerEvent m_laserTimerEvent;
         Timer m_laserTimer2;
+        TimerEvent m_laserTimer2Event;
         Timer m_delayTimer;
+        TimerEvent m_delayTimerEvent;
 
         Laser[] m_laser;
 
@@ -54,9 +57,12 @@ namespace Content.Arenas
             m_laserTimer = new Timer(Engine.GameTime.Source, m_laserOnTimeMs, TimerBehaviour.Restart);
             m_laserTimer2 = new Timer(Engine.GameTime.Source, m_laserOnTimeMs, TimerBehaviour.Restart);
             m_delayTimer = new Timer(Engine.GameTime.Source, m_delayTimeMs);
-            m_laserTimer.OnTime += new TimerEvent(m_laserTimer_OnTime);
-            m_laserTimer2.OnTime += new TimerEvent(m_laserTimer2_OnTime);
-            m_delayTimer.OnTime += new TimerEvent(m_delayTimer_OnTime);
+            m_laserTimerEvent = new TimerEvent(m_laserTimer_OnTime);
+            m_laserTimer.OnTime += m_laserTimerEvent;
+            m_laserTimer2Event = new TimerEvent(m_laserTimer2_OnTime);
+            m_laserTimer2.OnTime += m_laserTimer2Event;
+            m_delayTimerEvent = new TimerEvent(m_delayTimer_OnTime);
+            m_delayTimer.OnTime += m_delayTimerEvent;
             m_laserTimer.Start();
             m_laser[1].StartLaser();
             m_laser[2].StartLaser();
@@ -107,6 +113,15 @@ namespace Content.Arenas
         public override void OnEnd()
         {
             m_laserTimer.Stop();
+            m_laserTimer2.Stop();
+            m_delayTimer.Stop();
+
+            m_laserTimer.OnTime -= m_laserTimerEvent;
+            m_laserTimer2.OnTime -= m_laserTimer2Event;
+            m_delayTimer.OnTime -= m_delayTimerEvent;
+
+
+
             Engine.World.EventManager.RemoveListener((int)EventId.HalfTimeTransition, OnHalfTimeTransition);
         }
 

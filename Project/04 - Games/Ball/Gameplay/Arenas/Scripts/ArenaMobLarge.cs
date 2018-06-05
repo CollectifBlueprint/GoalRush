@@ -22,6 +22,7 @@ namespace Content.Arenas
     public class ArenaMobLarge : ArenaScript
     {
         Timer m_rotateTimer;
+        TimerEvent m_rotateTimerEvent;
         int m_timeFirstMS = 3000;
         int m_timeMS = 25000;
 
@@ -94,7 +95,8 @@ namespace Content.Arenas
             Engine.World.EventManager.AddListener((int)EventId.MatchEnd, OnMatchEnd);
 
             m_rotateTimer = new Timer(Engine.GameTime.Source, m_timeFirstMS, TimerBehaviour.Restart);
-            m_rotateTimer.OnTime += new TimerEvent(StartRotation);
+            m_rotateTimerEvent = new TimerEvent(StartRotation);
+            m_rotateTimer.OnTime += m_rotateTimerEvent;
         }
 
 
@@ -109,10 +111,14 @@ namespace Content.Arenas
         public void OnFirstPeriod(object eventParamater)
         {
             if (m_rotateTimer != null)
+            {
                 m_rotateTimer.Stop();
+                m_rotateTimer.OnTime -= m_rotateTimerEvent;
+            }
 
             m_rotateTimer = new Timer(Engine.GameTime.Source, m_timeFirstMS, TimerBehaviour.Restart);
-            m_rotateTimer.OnTime += new TimerEvent(StartRotation);
+            m_rotateTimer.OnTime += m_rotateTimerEvent;
+
             m_mobileObjs[0].Orientation = 0;
             m_mobileObjs[1].Orientation = 0;
             m_mobileObjCurrentAngle = 0;
@@ -136,6 +142,9 @@ namespace Content.Arenas
 
 			m_mobileObjs[0].Position = new Vector2(mobileObjsPosX, 0);
 			m_mobileObjs[1].Position = new Vector2(-mobileObjsPosX, 0);
+
+            m_rotateTimer.Stop();
+            m_rotateTimer.OnTime -= m_rotateTimerEvent;
         }
 
         public void OnSecondPeriod(object eventParamater)
@@ -144,7 +153,7 @@ namespace Content.Arenas
                 m_rotateTimer.Stop();
 
             m_rotateTimer = new Timer(Engine.GameTime.Source, m_timeFirstMS, TimerBehaviour.Restart);
-            m_rotateTimer.OnTime += new TimerEvent(StartRotation);
+            m_rotateTimer.OnTime += m_rotateTimerEvent;
             m_mobileObjs[0].Orientation = 0;
             m_mobileObjs[1].Orientation = 0;
             m_mobileObjCurrentAngle = 0;
@@ -157,7 +166,8 @@ namespace Content.Arenas
         public void OnMatchEnd(object eventParamater)
         {
             m_mobileObjMoving = false;
-            m_rotateTimer.Stop(); 
+            m_rotateTimer.Stop();
+            m_rotateTimer.OnTime -= m_rotateTimerEvent;
         }
 
         public override void OnUpdate()
@@ -194,6 +204,9 @@ namespace Content.Arenas
 			Engine.World.EventManager.RemoveListener((int)EventId.HalfTimeTransition, OnHalfTimeTransition);
 			Engine.World.EventManager.RemoveListener((int)EventId.SecondPeriod, OnSecondPeriod);
 			Engine.World.EventManager.RemoveListener((int)EventId.MatchEnd, OnMatchEnd);
+
+            m_rotateTimer.Stop();
+            m_rotateTimer.OnTime -= m_rotateTimerEvent;
         }
     }
 }

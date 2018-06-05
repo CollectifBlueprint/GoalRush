@@ -22,7 +22,9 @@ namespace Ball.Gameplay
         float m_totalTimeMS;
 
         Timer m_repeatTimer;
+        TimerEvent m_repeatTimerEvent;
         Timer m_lifeTimer;
+        TimerEvent m_lifeTimerEvent;
 
         public override void Start()
         {
@@ -52,12 +54,14 @@ namespace Ball.Gameplay
             m_totalTimeMS = 0.2f * 1000;
 
             m_repeatTimer = new Timer(Engine.GameTime.Source, m_repeatTimeMS, TimerBehaviour.Restart);
-            m_repeatTimer.OnTime += new TimerEvent(m_repeatTimer_OnTime);
+            m_repeatTimerEvent = new TimerEvent(m_repeatTimer_OnTime);
+            m_repeatTimer.OnTime += m_repeatTimerEvent;
             m_repeatTimer.Start();
             m_repeatTimer_OnTime(null);
 
             m_lifeTimer = new Timer(Engine.GameTime.Source, m_totalTimeMS, TimerBehaviour.Stop);
-            m_lifeTimer.OnTime += new TimerEvent(m_lifeTimer_OnTime);
+            m_lifeTimerEvent = new TimerEvent(m_lifeTimer_OnTime);
+            m_lifeTimer.OnTime += m_lifeTimerEvent;
             m_lifeTimer.Start();
         }
 
@@ -103,6 +107,12 @@ namespace Ball.Gameplay
             {
                 Owner.Remove(spriteCmp);
             }
+
+            m_lifeTimer.Stop();
+            m_lifeTimer.OnTime -= m_lifeTimerEvent;
+
+            m_repeatTimer.Stop();
+            m_repeatTimer.OnTime -= m_repeatTimerEvent;
         }
     }
 }

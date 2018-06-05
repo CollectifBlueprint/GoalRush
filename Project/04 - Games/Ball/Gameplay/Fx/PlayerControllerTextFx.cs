@@ -21,6 +21,7 @@ namespace Ball.Gameplay.Fx
         }
 
         Timer m_displayControllerTimerMS;
+        TimerEvent  m_displayControllerTimerEvent;
         bool m_active;
 
         Player m_player;
@@ -59,7 +60,8 @@ namespace Ball.Gameplay.Fx
             Owner.Attach(m_controllerTxtCmp);
 
             m_displayControllerTimerMS = new Timer(Engine.GameTime.Source, 3000);
-            m_displayControllerTimerMS.OnTime += delegate(Timer source) { m_active = false; };
+            m_displayControllerTimerEvent = delegate(Timer source) { m_active = false; };
+            m_displayControllerTimerMS.OnTime += m_displayControllerTimerEvent;
         }
 
         public override void Update()
@@ -89,11 +91,14 @@ namespace Ball.Gameplay.Fx
         public override void End()
         {
             base.End();
+            m_displayControllerTimerMS.Stop();
+            m_displayControllerTimerMS.OnTime -= m_displayControllerTimerEvent;
         }
 
         public void Stop()
         {
             m_active = false;
+            m_displayControllerTimerMS.Stop();
 
         }
     }

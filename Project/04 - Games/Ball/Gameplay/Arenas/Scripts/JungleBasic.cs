@@ -19,6 +19,7 @@ namespace Content.Arenas
     {
         GameObject[] m_walls;
         Timer m_wallTimer;
+        TimerEvent m_wallTimerEvent;
 
         bool m_rotating;
         float m_currentAngle = 0;
@@ -45,7 +46,8 @@ namespace Content.Arenas
             SetWallPosition();
 
             m_wallTimer = new Timer(Engine.GameTime.Source, 25000, TimerBehaviour.Restart);
-            m_wallTimer.OnTime += new TimerEvent(m_wallTimer_OnTime);
+            m_wallTimerEvent = new TimerEvent(m_wallTimer_OnTime);
+            m_wallTimer.OnTime += m_wallTimerEvent;
 
             Engine.World.EventManager.AddListener((int)EventId.FirstPeriod, OnFirstPeriod);
             Engine.World.EventManager.AddListener((int)EventId.HalfTime, OnHalfTime);
@@ -87,6 +89,8 @@ namespace Content.Arenas
 
         public void OnMatchEnd(object eventParamater)
         {
+            m_wallTimer.Stop();
+            m_wallTimer.OnTime -= m_wallTimerEvent;
         }
 
         public override void OnUpdate()

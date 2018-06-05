@@ -229,6 +229,8 @@ namespace Ball.Gameplay.Fx
         public override void End()
         {
             base.End();
+            m_textEffectTimer.Stop();
+            m_textEffectTimer.OnTime -= m_textEffectTimer_OnTime;
         }
 
     }

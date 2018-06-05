@@ -61,9 +61,6 @@ namespace Ball.Gameplay.Fx
             m_chargeTimerMS.OnTime += m_chargeTimerMS_OnTime;
 
             m_chargedMax = false;
-
-
-
         }
 
         void m_chargeTimerMS_OnTime(Timer source)
@@ -157,6 +154,9 @@ namespace Ball.Gameplay.Fx
             m_triangleMesh.Dispose();
 
             this.Enabled = false;
+
+            m_chargeTimerMS.Stop();
+            m_chargeTimerMS.OnTime -= m_chargeTimerMS_OnTime;
         }
     }
 }

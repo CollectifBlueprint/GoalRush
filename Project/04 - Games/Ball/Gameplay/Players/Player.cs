@@ -222,6 +222,9 @@ namespace Ball.Gameplay
             get { return m_controllerTxtCmp; }
         }
 
+        Timer m_effectDelayTimerMS;
+        TimerEvent m_effectDelayTimerEvent;
+
         #endregion Members
 
         #region ctor/dtor
@@ -242,6 +245,12 @@ namespace Ball.Gameplay
 
         public override void End()
         {
+            if (m_effectDelayTimerMS != null)
+            {
+                m_effectDelayTimerMS.Stop();
+                m_effectDelayTimerMS.OnTime -= m_effectDelayTimerEvent;
+            }
+
             foreach (var effect in m_effects.ToArray())
             {
                 effect.End();
@@ -1258,10 +1267,11 @@ namespace Ball.Gameplay
 
                     goldEffect.SetDuration(3000);
 
-                    Timer effectDelayTimerMS = new Timer(Engine.GameTime.Source, 1000);
-                    effectDelayTimerMS.OnTime += delegate (Timer source) { AddEffect(goldEffect); };
+                    m_effectDelayTimerMS = new Timer(Engine.GameTime.Source, 1000);
+                    m_effectDelayTimerEvent = delegate (Timer source) { AddEffect(goldEffect); };
+                    m_effectDelayTimerMS.OnTime += m_effectDelayTimerEvent;
 
-                    effectDelayTimerMS.Start();
+                    m_effectDelayTimerMS.Start();
                 }
             }
         }

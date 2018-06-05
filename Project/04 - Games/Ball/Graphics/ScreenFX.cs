@@ -68,6 +68,9 @@ namespace Ball.Graphics
         //
         public override void End()
         {
+            m_fadeTimerMS.Stop();
+            m_fadeTimerMS.OnTime -= m_fadeTimer_OnTime;
+
             Engine.Renderer.RenderLayers["BlackScreenOverlay"].Renderables.Remove(this); 
         }
 

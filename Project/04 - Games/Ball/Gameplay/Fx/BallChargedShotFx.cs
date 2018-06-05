@@ -27,6 +27,7 @@ namespace Ball.Gameplay
         }
 
         Timer m_fadeOutTimer;
+        TimerEvent m_fadeOutTimerEvent;
 
         Color m_color;
 
@@ -46,8 +47,9 @@ namespace Ball.Gameplay
             basicEffect.FogEnabled = false;
 
             m_fadeOutTimer = new Timer(Engine.GameTime.Source, 300, TimerBehaviour.Stop);
-            m_fadeOutTimer.OnTime += new TimerEvent(m_fadeOutTimer_OnTime);
-
+            m_fadeOutTimerEvent = new TimerEvent(m_fadeOutTimer_OnTime);
+            m_fadeOutTimer.OnTime += m_fadeOutTimerEvent;
+            
             m_effect = new EffectWrapper(basicEffect);
 
             m_mesh = new DynamicMesh<VertexPositionColor>(Engine.Renderer.Device, VertexPositionColor.VertexDeclaration, Microsoft.Xna.Framework.Graphics.PrimitiveType.TriangleList, 2048);
@@ -134,6 +136,13 @@ namespace Ball.Gameplay
             Engine.Renderer.Device.RasterizerState = RasterizerState.CullNone;
             Engine.Renderer.Device.DepthStencilState = DepthStencilState.None;
             Engine.Renderer.DrawMesh(m_mesh, m_effect);
+        }
+
+        public override void End()
+        {
+            base.End();
+            m_fadeOutTimer.Stop();
+            m_fadeOutTimer.OnTime -= m_fadeOutTimerEvent;
         }
     }
 }

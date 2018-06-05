@@ -14,6 +14,7 @@ namespace Ball.MainMenu.Scripts
     {
         MatchStartInfo m_newMatchInfo;
         Timer m_matchRestartTimer;
+        TimerEvent m_matchRestartTimerEvent;
 
         ScreenFade m_screenFade;
 
@@ -40,7 +41,8 @@ namespace Ball.MainMenu.Scripts
             m_screenFade.StartFade(ScreenFade.FadeType.FadeIn, 0, false);
 
             m_matchRestartTimer = new Timer(Engine.GameTime.Source, 200);
-            m_matchRestartTimer.OnTime += new TimerEvent(m_matchRestartTimer_OnTime);
+            m_matchRestartTimerEvent = new TimerEvent(m_matchRestartTimer_OnTime);
+            m_matchRestartTimer.OnTime += m_matchRestartTimerEvent;
 
             //Game.GameMusic.Tracks["MatchStream"].Pause();
         }
@@ -97,6 +99,9 @@ namespace Ball.MainMenu.Scripts
         public override void End()
         {
             Menu.Owner.Remove(m_screenFade);
+
+            m_matchRestartTimer.Stop();
+            m_matchRestartTimer.OnTime -= m_matchRestartTimerEvent;
         }
     }
 }

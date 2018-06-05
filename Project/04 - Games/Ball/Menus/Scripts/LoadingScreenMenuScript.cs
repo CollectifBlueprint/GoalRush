@@ -26,12 +26,11 @@ namespace Ball
         DateTime m_startTime;
 
         LBE.Timer m_textUpdateTimerMS;
+        LBE.TimerEvent m_textUpdateTimerEvent;
         int m_timerCount = 0;
 
         public override void Start()
         {
-
-
             m_frame = Engine.FrameCount;
 
             m_assetToLoad = Engine.AssetManager.AssetDb.Assets.ToArray();
@@ -54,7 +53,8 @@ namespace Ball
             Menu.Owner.Attach(m_loadingTextCmp);
 
             m_textUpdateTimerMS = new Timer(Engine.RealTime.Source, 200, TimerBehaviour.Restart);
-            m_textUpdateTimerMS.OnTime += new TimerEvent(m_textUpdateTimerMS_OnTime);
+            m_textUpdateTimerEvent = new TimerEvent(m_textUpdateTimerMS_OnTime);
+            m_textUpdateTimerMS.OnTime += m_textUpdateTimerEvent;
             m_textUpdateTimerMS.Start();
 
 #if DEBUG
@@ -128,6 +128,13 @@ namespace Ball
             else if (m_timerCount % 4 == 3)
                 m_loadingTextCmp.Text = "Loading...";
  
+        }
+
+        public override void End()
+        {
+            base.End();
+            m_textUpdateTimerMS.Stop();
+            m_textUpdateTimerMS.OnTime -= m_textUpdateTimerEvent;
         }
     }
 }

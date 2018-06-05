@@ -13,6 +13,7 @@ namespace Ball.MainMenu.Scripts
     {
         MatchStartInfo m_newMatchInfo;
         Timer m_matchRestartTimer;
+        TimerEvent m_matchRestartTimerEvent;
 
         public override void Start()
         {
@@ -38,7 +39,8 @@ namespace Ball.MainMenu.Scripts
             m_newMatchInfo.Teams[1].ConsecutiveWins = Game.GameManager.Teams[1].ConsecutiveWins;
 
             m_matchRestartTimer = new Timer(Engine.GameTime.Source, 200);
-            m_matchRestartTimer.OnTime += new TimerEvent(m_matchRestartTimer_OnTime);
+            m_matchRestartTimerEvent = new TimerEvent(m_matchRestartTimer_OnTime);
+            m_matchRestartTimer.OnTime += m_matchRestartTimerEvent;
         }
 
         public override void OnItemValid(string name, MenuController controller)
@@ -80,6 +82,15 @@ namespace Ball.MainMenu.Scripts
         {
             Game.GameManager.StartMatch(m_newMatchInfo);
             Game.MenuManager.QuitMenu();
+        }
+
+        public override void End()
+        {
+            base.End();
+
+            m_matchRestartTimer.Stop();
+            m_matchRestartTimer.OnTime -= m_matchRestartTimerEvent;
+
         }
     }
 }

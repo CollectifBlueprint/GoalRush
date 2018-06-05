@@ -100,7 +100,6 @@ namespace Ball.Gameplay
             Owner.Attach(m_audioCmpTimerPeriodEnd);
 
             m_goTextTimerMS = new Timer(Engine.GameTime.Source, 1000);
-            m_goTextTimerMS.OnTime += m_goTextTimerMS_OnTime;
 
             ChangeState(MatchState.Init);
 
@@ -405,12 +404,6 @@ namespace Ball.Gameplay
                 return m_halfTimeDuration - m_elapsedTime;
 
             return 0;
-        }
-
-
-        //
-        void m_goTextTimerMS_OnTime(Timer source)
-        {
         }
     }
 }

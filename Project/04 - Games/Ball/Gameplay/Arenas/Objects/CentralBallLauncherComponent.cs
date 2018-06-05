@@ -239,6 +239,12 @@ namespace Ball.Gameplay.Arenas.Objects
             base.End();
             StopCharge();
 
+            m_chargeTimerMS.Stop();
+            m_maxChargeTimerMS.Stop();
+
+            m_chargeTimerMS.OnTime -= m_chargeTimerMS_OnTime;
+            m_maxChargeTimerMS.OnTime -= m_maxChargeTimerMS_OnTime;
+
             m_triangleMesh.Dispose();
             m_lineMesh.Dispose();
         }

@@ -12,7 +12,8 @@ namespace Ball.Menus
     public class MenuScaleFx : GameObjectComponent
     {
         GameObjectComponent m_targetCmp;
-        Timer m_time;
+        Timer m_timer;
+        TimerEvent m_timerEvent;
 
         public MenuScaleFx(TextComponent textCmp)
         {
@@ -27,9 +28,10 @@ namespace Ball.Menus
         public override void Start()
         {
             float time = Engine.Debug.EditSingle("MenuScaleTime", 200);
-            m_time = new Timer(Engine.GameTime, time);
-            m_time.OnTime += new TimerEvent(m_time_OnTime);
-            m_time.Start();
+            m_timer = new Timer(Engine.GameTime, time);
+            m_timerEvent = new TimerEvent(m_time_OnTime);
+            m_timer.OnTime += m_timerEvent;
+            m_timer.Start();
         }
 
         void m_time_OnTime(Timer source)
@@ -39,7 +41,7 @@ namespace Ball.Menus
 
         public override void Update()
         {
-            float progress = m_time.TimeMS / m_time.TargetTime;
+            float progress = m_timer.TimeMS / m_timer.TargetTime;
             float scaleCoef = progress > 0.5f ? 2.0f * (1.0f - progress) : 2 * progress;
 
             float scale = LBE.MathHelper.Lerp(1.0f, Engine.Debug.EditSingle("MenuScale", 1.1f), scaleCoef);
@@ -48,6 +50,8 @@ namespace Ball.Menus
 
         public override void End()
         {
+            m_timer.Stop();
+            m_timer.OnTime -= m_timerEvent;
             SetScale(1);
         }
 

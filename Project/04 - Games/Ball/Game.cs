@@ -268,7 +268,12 @@ namespace Ball
                 if (Game.MenuManager.CurrentMenu != null && Game.MenuManager.CurrentMenu.Script.GetType() == typeof(AltMainMenuScript))
                     StartAIDemo();
                 else
-                    Reset();
+                {
+                    if (m_gameManager.IsAIGame())
+                    {
+                        Reset();
+                    }
+                }
             }
         }
 

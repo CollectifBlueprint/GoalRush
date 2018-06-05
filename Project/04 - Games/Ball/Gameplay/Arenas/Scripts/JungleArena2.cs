@@ -20,6 +20,7 @@ namespace Content.Arenas
     public class JungleArena2 : ArenaScript
     {
         Timer m_wallTimer;
+        TimerEvent m_wallTimerEvent;
 
         GameObject m_centerPieceObject;
 
@@ -32,7 +33,8 @@ namespace Content.Arenas
             var rbCmp = Arena.Owner.RigidBodyCmp;
 
             m_wallTimer = new Timer(Engine.GameTime.Source, 1500);
-            m_wallTimer.OnTime += new TimerEvent(StartRotation);
+            m_wallTimerEvent = new TimerEvent(StartRotation);
+            m_wallTimer.OnTime += m_wallTimerEvent;
 
             Asset<GameObjectDefinition> centerObjDef = Engine.AssetManager.GetAsset<GameObjectDefinition>("Arenas/JungleArena2/Center.lua::Center");
             m_centerPieceObject = new GameObject(centerObjDef);
@@ -90,6 +92,8 @@ namespace Content.Arenas
         public void OnMatchEnd(object eventParamater)
         {
             moving = false;
+            m_wallTimer.Stop();
+            m_wallTimer.OnTime -= m_wallTimerEvent;
         }
 
         float angle = -(float)Math.PI;

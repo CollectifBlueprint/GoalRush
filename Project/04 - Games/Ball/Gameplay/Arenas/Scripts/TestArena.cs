@@ -19,6 +19,7 @@ namespace Content.Arenas
         int m_side;
 
         Timer m_laserTimer;
+        TimerEvent m_laserTimerEvent;
         Laser[] m_laser;
 
         public override void OnInitGeometry()
@@ -26,7 +27,8 @@ namespace Content.Arenas
             Engine.World.EventManager.AddListener((int)EventId.HalfTimeTransition, OnHalfTimeTransition);
             
             m_laserTimer = new Timer(Engine.GameTime.Source, 6000, TimerBehaviour.Restart);
-            m_laserTimer.OnTime += new TimerEvent(m_laserTImer_OnTime);
+            m_laserTimerEvent = new TimerEvent(m_laserTImer_OnTime);
+            m_laserTimer.OnTime += m_laserTimerEvent;
             m_laserTimer.Start();
 
             m_laser = new Laser[4];
@@ -95,6 +97,7 @@ namespace Content.Arenas
         public override void OnEnd()
         {
             m_laserTimer.Stop();
+            m_laserTimer.OnTime -= m_laserTimerEvent;
         }
 
         public void OnHalfTimeTransition(object arg)

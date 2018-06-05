@@ -94,17 +94,21 @@ namespace Ball.Gameplay
         }
 
         Timer m_launcherSelectionDelayTimer;
+        TimerEvent m_launcherSelectionDelayTimerEvent;
         Timer m_launcherSelectionFeedbackTimer;
+        TimerEvent m_launcherSelectionFeedbackTimerEvent;
 
         GameObject m_matchObject;
 
         public GameManager()
         {
             m_launcherSelectionFeedbackTimer = new Timer(Engine.GameTime.Source, 1500);
-            m_launcherSelectionFeedbackTimer.OnTime += new TimerEvent(m_launcherSelectionFeedbackTimer_OnTime);
+            m_launcherSelectionFeedbackTimerEvent = new TimerEvent(m_launcherSelectionFeedbackTimer_OnTime);
+            m_launcherSelectionFeedbackTimer.OnTime += m_launcherSelectionFeedbackTimerEvent;
 
             m_launcherSelectionDelayTimer = new Timer(Engine.GameTime.Source, 700);
-            m_launcherSelectionDelayTimer.OnTime += new TimerEvent(m_launcherSelectionDelayTimer_OnTime);
+            m_launcherSelectionDelayTimerEvent = new TimerEvent(m_launcherSelectionDelayTimer_OnTime);
+            m_launcherSelectionDelayTimer.OnTime += m_launcherSelectionDelayTimerEvent;
         }
 
         public void StartMatch(MatchStartInfo info)
@@ -194,7 +198,6 @@ namespace Ball.Gameplay
 
             m_arena = null;
 
-          
             if (m_paused)
                 UnpauseMatch();
 
@@ -615,6 +618,15 @@ namespace Ball.Gameplay
             GameObjectComponent launcher = (GameObjectComponent)Arena.SelectedLauncher;
             Camera.Focus(launcher.Owner);
             m_launcherSelectionFeedbackTimer.Start();
+        }
+
+
+        ~GameManager()
+        {
+            m_launcherSelectionFeedbackTimer.Stop();
+            m_launcherSelectionFeedbackTimer.OnTime -= m_launcherSelectionFeedbackTimerEvent;
+            m_launcherSelectionDelayTimer.Stop();
+            m_launcherSelectionDelayTimer.OnTime -= m_launcherSelectionDelayTimerEvent;
         }
     }
 }

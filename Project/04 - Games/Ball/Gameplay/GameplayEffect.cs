@@ -14,6 +14,7 @@ namespace Ball.Gameplay
         {
             get { return m_timer; }
         }
+        TimerEvent m_TimerEvent;
 
         bool m_active;
         public bool Active
@@ -25,7 +26,8 @@ namespace Ball.Gameplay
         public GameplayEffect()
         {
             m_timer = new Timer(Engine.GameTime.Source, 0);
-            m_timer.OnTime += new TimerEvent(m_timer_OnTime);
+            TimerEvent m_TimerEvent = new TimerEvent(m_timer_OnTime);
+            m_timer.OnTime += m_TimerEvent;
         }
 
         public void SetDuration(float timeMs)
@@ -54,6 +56,7 @@ namespace Ball.Gameplay
 
         public virtual void End()
         {
+            m_timer.OnTime -= m_TimerEvent;
         }
     }
 }

@@ -230,6 +230,8 @@ namespace Ball.Gameplay.Fx
         public override void End()
         {
             base.End();
+            m_spriteEffectTimer.Stop();
+            m_spriteEffectTimer.OnTime -= m_spriteEffectTimer_OnTime;
         }
 
     }

@@ -15,6 +15,7 @@ namespace Ball.Gameplay.Arenas.Objects
     public class AssistBallLauncherComponent : LauncherComponent
     {
         Timer m_beginLauncherTimerMS;
+        TimerEvent m_beginLauncherTimerEvent;
 
         Timer m_scanPlayerTimerMS;
         float m_scanRadius = 350f;
@@ -50,7 +51,8 @@ namespace Ball.Gameplay.Arenas.Objects
             base.Start();
             
             m_beginLauncherTimerMS = new Timer(Engine.GameTime.Source, 300);
-            m_beginLauncherTimerMS.OnTime += new TimerEvent(m_beginLauncherTimerMS_OnTime);
+            m_beginLauncherTimerEvent = new TimerEvent(m_beginLauncherTimerMS_OnTime);
+            m_beginLauncherTimerMS.OnTime += m_beginLauncherTimerEvent;
 
             m_audioCmpBallLaunch = new AudioComponent("Audio/Sounds.lua::BallShot");
             Owner.Attach(m_audioCmpBallLaunch);
@@ -80,6 +82,8 @@ namespace Ball.Gameplay.Arenas.Objects
         public override void End()
         {
             base.End();
+            m_beginLauncherTimerMS.Stop();
+            m_beginLauncherTimerMS.OnTime -= m_beginLauncherTimerEvent;
         }
 
         public override GameObjectComponent Clone()
