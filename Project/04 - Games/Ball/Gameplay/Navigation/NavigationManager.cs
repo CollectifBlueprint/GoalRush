@@ -151,7 +151,7 @@ namespace Ball.Gameplay.Navigation
             shootLeftMap.Costs.Add(m_shootLeftPlayerCosts[1]);
             shootLeftMap.LinearParameters.SpatialDecay = 0.01f;
             shootLeftMap.LinearParameters.MinValue = -10;
-            shootLeftMap.UpdateFrequency = PotentialMapUpdateFrequency.Normal;
+            shootLeftMap.UpdateFrequency = PotentialMapUpdateFrequency.Fast;
             Game.GameManager.Navigation.PotentialMaps.Add("ShootLeft", shootLeftMap);
 
             var shootRightMap = new PotentialMap(Game.GameManager.Navigation, PotentialMapType.Linear);
@@ -160,7 +160,7 @@ namespace Ball.Gameplay.Navigation
             shootRightMap.Costs.Add(m_shootRightPlayerCosts[1]);
             shootRightMap.LinearParameters.SpatialDecay = 0.01f;
             shootRightMap.LinearParameters.MinValue = -10;
-            shootRightMap.UpdateFrequency = PotentialMapUpdateFrequency.Normal;
+            shootRightMap.UpdateFrequency = PotentialMapUpdateFrequency.Fast;
             Game.GameManager.Navigation.PotentialMaps.Add("ShootRight", shootRightMap);
         }
 
@@ -270,7 +270,7 @@ namespace Ball.Gameplay.Navigation
                             distCoef = 1 - LBE.MathHelper.LinearStep(bestShootDistance, maxShootDistance, distToGoal);
                         float shootValue = LBE.MathHelper.Lerp(maxShootDistancePenalty, 1.0f, distCoef);
 
-                        cell.CanShootLeftValue = shootValue;
+                        cell.CanShootLeftValue = shootValue;                        
                     }
                 }
 

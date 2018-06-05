@@ -42,7 +42,7 @@ namespace Ball.Gameplay.Players.AI
             {
                 var target = Game.GameManager.Players[0];
                 var dir = target.Position - PlayerAI.Position;
-                
+
                 PlayerAI.AimAtPosition(target.Position);
 
                 if (!PlayerAI.Player.IsShotCharging)
@@ -84,7 +84,7 @@ namespace Ball.Gameplay.Players.AI
                 //If a ennemy player in close to the teamate, tackle it
                 float assistTackleDistance = Engine.Debug.EditSingle("AssistTackleRange", 180);
                 if (Vector2.Distance(opponents.Position, PlayerAI.Player.TeamMate.Position) < assistTackleDistance)
-                     PlayerAI.TackleIfInRange();
+                    PlayerAI.TackleIfInRange();
             }
 
             //Assist the teammate
@@ -171,11 +171,29 @@ namespace Ball.Gameplay.Players.AI
             float passTacticalValue = 0.75f;
             float dangerTacticalValue = 0.40f;
 
-            MoveToShootPosition();
+            //Get distance to goal
+            Goal goal = Game.Arena.LeftGoal.Team == PlayerAI.Player.Team ? Game.Arena.RightGoal : Game.Arena.LeftGoal;
+            float distFromGoal = Vector2.Distance(goal.Position, PlayerAI.Position);
 
-            //Set a delay before shooting the ball
-            float minTimeBeforeShoot = Engine.Debug.EditSingle("PlayerShootDelay", 1200);
-            if (Engine.GameTime.TimeMS - PlayerAI.Info.BallTakenTime < minTimeBeforeShoot)
+            MoveToShootPosition();
+            if (distFromGoal < 250 && canShoot)
+                PlayerAI.AimAtPosition(goal.Position);
+
+            //Set a delay before shooting or passing the ball when we just got it
+            float shootDelayMin = Engine.Debug.EditSingle("AIShootDelayMin", 80);
+            float shootDelayDistanceBase = Engine.Debug.EditSingle("AIShootDelayDistanceBase", 400);
+            float shootDelayDistanceCoefMax = Engine.Debug.EditSingle("AIShootDelayDistanceCoefMax", 5);
+            float shootDelaySkillBase = Engine.Debug.EditSingle("AIShootDelaySkillBase", 400);
+            float shootDelaySkillCoefMin = Engine.Debug.EditSingle("AIShootDelaySkillCoefMin", 0.5f);
+
+            //Shoot faster if closer to goal
+            float distanceCoef = LBE.MathHelper.LinearStep(100, 600, distFromGoal);
+
+            //More agressive AI will shoot faster
+            float agresssivnessCoef = LBE.MathHelper.Lerp(shootDelaySkillCoefMin, 1.0f, (1 - PlayerAI.AiState.AgressivenessCoef));
+            float shootDelay = shootDelayMin + shootDelayDistanceBase * distanceCoef + shootDelaySkillBase * agresssivnessCoef;
+
+            if (Engine.GameTime.TimeMS - PlayerAI.Info.BallTakenTime < shootDelay)
                 return;
 
             //If possible, shoot

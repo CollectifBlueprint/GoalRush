@@ -159,6 +159,11 @@ namespace Ball.Gameplay.Players.AI
                 CancelPassCharge();
             }
 
+            //if (Player.PlayerIndex != PlayerIndex.Two)
+            //    return;
+            //if (Player.Team.TeamID == TeamId.TeamOne)
+            //    return;
+
             if (Game.GameManager.Match.MatchState == MatchState.FirstPeriod || Game.GameManager.Match.MatchState == MatchState.SecondPeriod)
                m_script.Update();
         }
@@ -202,11 +207,6 @@ namespace Ball.Gameplay.Players.AI
             m_aiState.ShootCharged = m_aiState.TacticalSkills > 0.8f;
             m_aiState.Pass = m_aiState.TacticalSkills > 0.8f;
             m_aiState.TeleportToDefense = m_aiState.TacticalSkills > 0.8f;
-
-            //if (Player.PlayerIndex != PlayerIndex.Two)
-            //    return;
-            //if (Player.Team.TeamID == TeamId.TeamOne)
-            //    return;
 
             Engine.Log.Debug("AIAgressiveness", AiState.AgressivenessCoef.ToString("0.0"));
             Engine.Log.Debug("AIPrecision", AiState.ShootingPrecision.ToString("0.0"));
