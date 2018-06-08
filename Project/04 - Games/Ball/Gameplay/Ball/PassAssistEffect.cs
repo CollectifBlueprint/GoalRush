@@ -111,7 +111,7 @@ namespace Ball.Gameplay.BallEffects
             Ball.Owner.Attach(m_particleCmpTrailHighlight);
 
 
-            Ball.BallSprite.Alpha = 0;
+            Ball.BallSprite.Alpha = 0.5f;
         }
 
         public override void End()

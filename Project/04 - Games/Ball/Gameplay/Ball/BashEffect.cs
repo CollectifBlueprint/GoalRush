@@ -26,7 +26,7 @@ namespace Ball.Gameplay.BallEffects
 
             Ball.Properties.Untakable.Set();
             Ball.Properties.PassThroughPlayer.Set();
-            Ball.BallSprite.Alpha = 0;
+            Ball.BallSprite.Alpha = 0.5f;
 
             StartFX();
         }
