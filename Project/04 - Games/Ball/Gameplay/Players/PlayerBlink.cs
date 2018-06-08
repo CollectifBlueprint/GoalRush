@@ -58,13 +58,13 @@ namespace Ball.Gameplay.Players
 
             var holeColor = Color.Lerp(m_player.PlayerColors[2], Color.White, 0.4f);
 
-            m_holeInCmp = new SpriteComponent(Sprite.CreateFromTexture("Graphics/ball48.png"), "ArenaOverlay3");
+            m_holeInCmp = new SpriteComponent(Sprite.CreateFromTexture("Graphics/Teleport.png"), "ArenaOverlay3");
             m_holeInCmp.AttachedToOwner = false;
             m_holeInCmp.Visible = false;
             m_holeInCmp.Sprite.Color = holeColor;
             Owner.Attach(m_holeInCmp);
 
-            m_holeOutCmp = new SpriteComponent(Sprite.CreateFromTexture("Graphics/ball48.png"), "ArenaOverlay3");
+            m_holeOutCmp = new SpriteComponent(Sprite.CreateFromTexture("Graphics/Teleport.png"), "ArenaOverlay3");
             m_holeOutCmp.AttachedToOwner = false;
             m_holeOutCmp.Visible = false;
             m_holeOutCmp.Sprite.Color = holeColor;
