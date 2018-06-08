@@ -527,6 +527,9 @@ namespace Ball.Gameplay
         {
             Game.GameMusic.StopAll();
 
+            m_launcherSelectionFeedbackTimer.Stop();
+            m_launcherSelectionDelayTimer.Stop();
+
             var menuDef = Engine.AssetManager.Get<Menus.MenuDefinition>("Interface/MatchEndMenu.lua::Menu");
             Game.MenuManager.StartMenu(menuDef);
         }
@@ -599,6 +602,9 @@ namespace Ball.Gameplay
 
         void m_launcherSelectionFeedbackTimer_OnTime(Timer source)
         {
+            if (Arena == null)
+                return;
+
             if (Arena.SelectedLauncher == null)
             {
                 Engine.Log.Write("No laucnher selected!");
@@ -614,6 +620,9 @@ namespace Ball.Gameplay
 
         void m_launcherSelectionDelayTimer_OnTime(Timer source)
         {
+            if (Arena == null)
+                return;
+
             Arena.SelectedLauncher.Select();
             GameObjectComponent launcher = (GameObjectComponent)Arena.SelectedLauncher;
             Camera.Focus(launcher.Owner);
