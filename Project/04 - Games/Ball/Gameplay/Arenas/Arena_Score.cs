@@ -81,8 +81,13 @@ namespace Ball.Gameplay.Arenas
 
             float fontScale = Engine.Debug.EditSingle("FontScale",1.0f);
 
-            Color color = Color.White;
 
+            Color color = new Color(140, 140, 140);
+            if (ColorScheme.Dark)
+            {
+                 color = new Color(240, 240, 240);
+            }
+          
             m_scoreDashTextCmp.Text = "-";
             m_scoreDashTextCmp.Alignement = TextAlignementHorizontal.Center;
             m_scoreDashTextCmp.Style = new TextStyle();

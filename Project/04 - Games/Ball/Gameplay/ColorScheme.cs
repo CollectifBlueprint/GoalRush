@@ -16,5 +16,6 @@ namespace Ball.Gameplay
     {
         public Color Color1;
         public Color Color2;
+        public bool Dark = false;
     }
 }

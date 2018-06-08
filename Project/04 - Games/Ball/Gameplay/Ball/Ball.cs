@@ -102,7 +102,6 @@ namespace Ball.Gameplay
         public override void Start()
         {
             m_params = Engine.AssetManager.GetAsset<BallParameters>("Game/Ball.lua::Ball");
-
             m_properties = new BallProperties();
 
             m_effects = new List<BallEffect>();
@@ -120,7 +119,11 @@ namespace Ball.Gameplay
 
             Owner.Attach(m_bodyCmp);
 
-            m_ballSprite = Sprite.Create("Graphics/ballSprite.lua::Sprite");
+            if (Game.Arena.ColorScheme.Dark == true)
+                m_ballSprite = Sprite.Create("Graphics/ballSprite.lua::SpriteDark");
+            else
+                m_ballSprite = Sprite.Create("Graphics/ballSprite.lua::Sprite");
+
             Owner.Attach(new SpriteComponent(m_ballSprite, "ArenaOverlay9"));
 
             m_ballBashSprite = Sprite.Create("Graphics/ballSprite.lua::SpriteBash");

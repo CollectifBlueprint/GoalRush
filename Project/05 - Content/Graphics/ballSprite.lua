@@ -10,6 +10,18 @@
 	Scale = 0.4,
 }
 
+SpriteDark = {
+	Animations = {
+		{
+			Name = "Ball",
+			Texture = "@Graphics/paletDark.png",
+		},
+	},	
+	
+	DefaultAnimation = "Ball",		
+	Scale = 0.4,
+}
+
 SpriteBash = {
 	Animations = {
 		{
