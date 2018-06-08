@@ -16,3 +16,22 @@ PlayerSprites = {
 			Mask = "@Graphics/Players/trianglematerial.png",
 		},
 }
+
+PlayerSpritesTackle = {
+		{
+			Material = "@Graphics/Players/hexaTackle.png", 
+			Mask = "@Graphics/Players/hexaTackleMaterial.png",
+		},
+		{
+			Material = "@Graphics/Players/triangleTackle.png", 
+			Mask = "@Graphics/Players/triangleTackleMaterial.png",
+		},
+		{
+			Material = "@Graphics/Players/hexaTackle.png", 
+			Mask = "@Graphics/Players/hexaTackleMaterial.png",
+		},
+		{
+			Material = "@Graphics/Players/triangleTackle.png", 
+			Mask = "@Graphics/Players/triangleTackleMaterial.png",
+		},
+}

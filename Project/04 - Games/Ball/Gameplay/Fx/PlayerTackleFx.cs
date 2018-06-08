@@ -34,11 +34,18 @@ namespace Ball.Gameplay
             m_spriteCmps = new ColorMaskedSprite[nSprite];
             for (int i = 0; i < nSprite; i++)
             {
-                Sprite playerSprite = Sprite.CreateFromTexture("Graphics/playerAO.png");
+
+                var allPlayerSpriteInfos = Engine.AssetManager.Get<PlayerSpriteInfo[]>("Game/PlayerSprites.lua::PlayerSpritesTackle");
+                var playerSpriteInfo = allPlayerSpriteInfos[(int)m_player.PlayerIndex];
+
+                Sprite playerSprite = Sprite.CreateFromTexture(playerSpriteInfo.Material);
+
                 playerSprite.Scale = new Vector2(0.48f, 0.48f);
+                playerSprite.Orientation = m_player.Owner.Orientation;
+
                 m_spriteCmps[i] = new ColorMaskedSprite(playerSprite, "ArenaOverlay5");
-                var texAsset = Engine.AssetManager.GetAsset<Texture2D>("Graphics/playerMaterial.png");
-                m_spriteCmps[i].Mask = texAsset.Content;
+                var texAsset = playerSpriteInfo.Mask;
+                m_spriteCmps[i].Mask = texAsset;
 
                 m_spriteCmps[i].Color1 = m_player.PlayerColors[0];
                 m_spriteCmps[i].Color2 = m_player.PlayerColors[1];

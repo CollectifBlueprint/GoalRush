@@ -13,6 +13,10 @@ namespace LBE.Graphics.Sprites
     public class Sprite
     {
         Asset<SpriteDefinition> m_definition;
+        public SpriteDefinition Definition
+        {
+            get { return m_definition.Content; }
+        }
 
         Dictionary<String, SpriteAnimation> m_animations;
         public Dictionary<String, SpriteAnimation> Animations
